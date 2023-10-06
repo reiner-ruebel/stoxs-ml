@@ -46,3 +46,4 @@ class Bookmark(db.Model):
 
     def __repr__(self) -> str:
         return 'Boomark>>> {self.url}'
+    
