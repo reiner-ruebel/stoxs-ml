@@ -65,3 +65,8 @@ def create_app(test_config=None):
         return jsonify({"error": "server error"}), HTTP_500_INTERNAL_SERVER_ERROR
         
     return app
+
+
+if __name__ == '__main__':
+   app = create_app()
+   app.run()
