@@ -4,17 +4,19 @@ All blueprints are listed in this module
 
 from flask import Blueprint
 
-# list of blueprints (module, url_prefix)
-_credentials: list[tuple[str, str]] = [
-    ("auth", "auth"),
-    ("stoxs", "api/stoxs")
+# list of blueprints (module name, url)
+# The default url is the same as the module location. 
+_credentials: list[tuple[str, str | None]] = [
+    ("account.login", None),
+    ("account.register", None),
+    ("stoxs/provider", "api")
     ]
 
 
 def _create_one(credential: tuple[str, str]) -> Blueprint:
     module_name: str = credential[0]
     package_name: str = f"app.api.{module_name}"
-    url_prefix:str = "/" + credential[1]
+    url_prefix:str = "/" + (credential[1] if credential[1] is not None else module_name.replace(".", "/"))
 
     blueprint: Blueprint = Blueprint(name=module_name, import_name=package_name, url_prefix=url_prefix)
     return blueprint
