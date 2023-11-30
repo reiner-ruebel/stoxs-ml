@@ -2,29 +2,28 @@
 Flask environment
 """ 
 
-from importlib import import_module
 from typing import Type
 
-from flask import Flask
+from flask import Blueprint, Flask
 
-from app.core.flaskenv.blueprints import all_blueprints
 from app.core.config import BaseConfig
 
 
 class FlaskEnv:
     """ The app's Flask environment """
 
-    def __init__(self, config: Type[BaseConfig]) -> None:
+    def __init__(self, config: Type[BaseConfig], blueprints:list[Blueprint]) -> None:
         """ Create the app. """
         self.config = config
+        self.blueprints = blueprints
         self._app: Flask = Flask(__name__)
         self._app.config.from_object(self.config)
+        self._app.config['DEBUG'] = True
         
 
-    def blueprints(self) -> None:
+    def register(self) -> None:
         """ Loads all modules and registers all blueprints """
-        for blueprint in all_blueprints:
-            import_module(blueprint.import_name)
+        for blueprint in self.blueprints:
             self._app.register_blueprint(blueprint)
      
 

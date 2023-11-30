@@ -10,14 +10,16 @@ from typing import Type
 
 from app.core.config import BaseConfig, DevConfig
 from app.core.flaskenv.flaskenv import FlaskEnv
+from app.core.flaskenv.blueprints import blueprints
 
 
-def main(config: Type[BaseConfig]) -> None:
-    flask: FlaskEnv = FlaskEnv(config)
-    flask.blueprints()
+def main() -> None:
+    config: Type[BaseConfig] = DevConfig # Select Dev, Test, Prod
+
+    flask: FlaskEnv = FlaskEnv(config, blueprints)
+    flask.register()
     flask.run()
 
 
 if __name__ == "__main__":
-    config: Type[BaseConfig] = DevConfig # Select Dev, Test, Prod
-    main(config)
+    main()
