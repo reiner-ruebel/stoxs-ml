@@ -1,7 +1,7 @@
 import os
 from typing import Optional
 
-from app.shared.helpers import get_application_path, get_module_names
+from app.shared.lib import get_application_path, get_module_names
 from app.shared.consts import Consts
 
 _bp_dot_root = Consts.BP_ROOT.replace('/', '.')
