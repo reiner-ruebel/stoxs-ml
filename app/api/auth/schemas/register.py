@@ -4,7 +4,7 @@ from typing import Dict, Any
 
 from marshmallow import Schema, fields, validate, ValidationError
 
-from app.shared.lib import valid_mail_address
+from app.shared.utils import valid_mail_address
 
 
 class RegisterSchema(Schema):

@@ -8,7 +8,7 @@ from typing import Optional
 
 from flask import Blueprint
 
-from app.core.shared.lib import get_containers
+from app.core.shared.utils import get_containers
 from app.api.shared import endpoints, container_import_name, container_url_prefix, get_container
 
 

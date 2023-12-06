@@ -13,9 +13,12 @@ class BaseConfig:
     """ Default configuration options. This should never be used! """
     SITE_NAME: str = os.environ.get('APP_NAME', 'stoxs')
     SECRET_KEY: str = os.environ.get('SECRET_KEY', 'base secret key')
-    ENVIRONMENT:str = property(lambda self: self.__class__.__name__)
+    ENVIRONMENT = property(lambda self: self.__class__.__name__)
     DEBUG: bool = False
-    
+
+    SQLALCHEMY_DATABASE_URI = os.getenv('SQLALCHEMY_DATABASE_URI', 'sqlite:///default.db')
+    SQLALCHEMY_TRACK_MODIFICATIONS: bool = False    
+
 
 class DevConfig(BaseConfig):
     """ Development setup """

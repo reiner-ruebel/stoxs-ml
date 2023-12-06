@@ -1,7 +1,7 @@
 import os
 
 from app.shared.consts import Consts
-from app.shared.lib import get_application_path
+from app.shared.utils import get_application_path
 
 
 def get_containers() -> list[str]:
