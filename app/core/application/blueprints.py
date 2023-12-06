@@ -16,10 +16,15 @@ from app.api.shared import endpoints, container_import_name, container_url_prefi
 _blueprints_map: dict[str, Blueprint] = {}
 
 
-def get_blueprint(module_name: str) -> Optional[Blueprint]:
+def get_blueprint(module_name: str) -> Blueprint:
     """ Returns a blueprint by its container name """
     container: Optional[str] = get_container(module_name)
-    return None if container is None else _blueprints_map.get(container, None)
+    if container is None:
+        raise ValueError(f"Module {module_name} is not in a container.")
+    blueprint = _blueprints_map.get(container)
+    if blueprint is None:
+        raise ValueError(f"Container {container} has no blueprint.")
+    return blueprint
 
 
 def _create_all() -> list[Blueprint]:

@@ -15,7 +15,7 @@ class RegisterSchema(Schema):
     password = fields.Str(required=True, validate=validate.Length(max=Consts.MAX_PASSWORD_LENGTH, min=Consts.MIN_PASSWORD_LENGTH))
 
     @staticmethod
-    def validate(data: Dict[str, Any]) -> None:
+    def check_username_vs_mailaddress(data: Dict[str, Any]) -> None:
         if data['user_name'].lower() == data['email_address'].lower() and valid_mail_address(data['user_name']):
             raise ValidationError("Username cannot be an email address unless it's the same with your email address!")
 

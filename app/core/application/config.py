@@ -9,10 +9,21 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-class BaseConfig:
+class MailConfig:
+    """ SMTP settings """
+    MAIL_SERVER = os.environ.get('MAIL_SERVER', 'my.smtp.server')
+    MAIL_BACKEND = 'smtp'
+    MAIL_PORT = 587
+    MAIL_USE_TLS = True
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME', 'username')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD', '********')
+    MAIL_DEFAULT_SENDER = os.environ.get('MAIL_DEFAULT_SENDER', 'username@company.com')
+
+
+class BaseConfig(MailConfig):
     """ Default configuration options. This should never be used! """
     SITE_NAME: str = os.environ.get('APP_NAME', 'stoxs')
-    SECRET_KEY: str = os.environ.get('SECRET_KEY', 'base secret key')
+    SECRET_KEY: str = "not set"
     ENVIRONMENT = property(lambda self: self.__class__.__name__)
     DEBUG: bool = False
 
@@ -28,7 +39,7 @@ class DevConfig(BaseConfig):
 
 class ProdConfig(BaseConfig):
     """ Production setup """
-    SECRET_KEY: str = os.environ.get('SECRET_DEV_KEY', 'dev secret key')
+    SECRET_KEY: str = os.environ.get('SECRET_PROD_KEY', 'prod secret key')
 
 
 def _get_config() -> BaseConfig:

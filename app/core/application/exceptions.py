@@ -24,6 +24,11 @@ class InternalServerErrorHandler(BaseErrorHandler):
 
     # You can override handle_error here if needed
 
+class NeedApplicationJsoneErrorHandler(BaseErrorHandler):
+    def __init__(self):
+        super().__init__(415)
+
+
 # Instantiate specific error handlers
 internal_server_error_handler = InternalServerErrorHandler()
 # Add other specific error handlers as needed
@@ -42,5 +47,6 @@ def register_error_handlers(app: Flask):
 
 error_handlers: list[tuple[int, ErrorHandlerProtocol]] = [
     (500, InternalServerErrorHandler()),
+    (415, NeedApplicationJsoneErrorHandler()),
     # Add other error handlers as needed
 ]
