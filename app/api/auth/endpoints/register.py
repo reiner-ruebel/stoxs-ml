@@ -6,7 +6,7 @@ from typing import cast
 
 from flask import Blueprint, request, jsonify, Response
 from flask_security import password_complexity_validator
-from marshmallow import Schema, ValidationError
+from marshmallow import ValidationError
 
 from app.core.application.extensions import security
 from app.core.application.blueprints import get_blueprint

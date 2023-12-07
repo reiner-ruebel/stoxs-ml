@@ -6,15 +6,25 @@ from importlib import import_module
 
 from flask import Flask
 
+from app.core.application.config import config
+from app.core.application.database import db
+from app.core.application.blueprints import blueprints
+from app.core.application.extensions import extensions
+from app.core.application.models import models
+from app.core.application.exceptions import error_handlers
+
 from app.core.application.credentials import Credentials
 
 
-def create_app(credentials: Credentials) -> Flask:
+def create_app() -> Flask:
     """
     Flask application factory. Initializes and returns the Flask application.
 
-    The credentials such as blueprints, error handlers, ... are injected and initialized.
+    The credentials such as blueprints, error handlers, ... are "injected" and initialized.
     """
+
+     # "dependency injection". create_app() should have no parameters.
+    credentials: Credentials = Credentials(config, db, blueprints, extensions, models, error_handlers)
 
     app = Flask(__name__) # create
 

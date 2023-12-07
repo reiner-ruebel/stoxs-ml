@@ -12,20 +12,10 @@ Each part can be dynamically replaced by importing it from another module, e.g. 
 
 from flask import Flask
 
-from app.core.application.config import config
-from app.core.application.database import db
-from app.core.application.blueprints import blueprints
-from app.core.application.extensions import extensions
-from app.core.application.models import models
-from app.core.application.exceptions import error_handlers
-
-from app.core.application.credentials import Credentials
 from app.core.application import create_app
 
 
-_credentials: Credentials = Credentials(config, db, blueprints, extensions, models, error_handlers)
-
-app: Flask = create_app(_credentials)
+app: Flask = create_app()
 
 if __name__ == "__main__":
     app.run()

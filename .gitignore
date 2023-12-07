@@ -4,9 +4,10 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 #Added by stoxs
+.flaskenv
 .sln
 .pyproj
-.mypy.init
+instance/
 
 # User-specific files
 *.rsuser
