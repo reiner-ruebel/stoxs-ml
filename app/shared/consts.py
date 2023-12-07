@@ -8,3 +8,5 @@ class Consts:
 
     BP_ROOT: str = "app/api" # Root folder of all blueprints.
     ENDPOINTS: str = "endpoints" # The folder name where all endpoints are located inside a container (blueprint)
+    MIDDLEWARE: str = "app/core/middlewares" # The name of the middleware module in a middleware directory.
+    

@@ -22,6 +22,7 @@ class Credentials:
             blueprints: list[Blueprint],
             extensions: list[tuple[object, Callable[[Flask], None], dict[str, object]]],
             models: list[str],
+            middlewares: list[str],
             error_handlers: list[tuple[int, ErrorHandlerProtocol]],
     ) -> None:
         self.config = config
@@ -29,5 +30,6 @@ class Credentials:
         self.blueprints = blueprints
         self.extensions = extensions
         self.models = models
+        self.middlewares = middlewares
         self.error_handlers = error_handlers
         

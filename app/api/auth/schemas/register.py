@@ -6,10 +6,12 @@ from app.shared.utils import valid_mail_address
 
 
 class RegisterSchema(Schema):
-    name = fields.Str(required=True, validate=validate.Length(max=Consts.MAX_NAME_LENGTH, min=1))
-    sur_name = fields.Str(required=True, validate=validate.Length(max=Consts.MAX_NAME_LENGTH, min=1))
-    user_name = fields.Str(required=True, validate=validate.Length(max=Consts.MAX_NAME_LENGTH, min=1))
-    email_address = fields.Email(required=True, validate=validate.Length(max=Consts.MAX_EMAIL_LENGTH))
+    firstname = fields.Str(required=True, validate=validate.Length(max=Consts.MAX_NAME_LENGTH, min=1))
+    middlename = fields.Str(max=Consts.MAX_NAME_LENGTH)
+    surname = fields.Str(required=True, validate=validate.Length(max=Consts.MAX_NAME_LENGTH, min=1))
+    title = fields.Str(max=Consts.MAX_NAME_LENGTH)
+    username = fields.Str(required=True, validate=validate.Length(max=Consts.MAX_NAME_LENGTH, min=1))
+    email = fields.Email(required=True, validate=validate.Length(max=Consts.MAX_EMAIL_LENGTH))
     password = fields.Str(required=True, validate=validate.Length(max=Consts.MAX_PASSWORD_LENGTH, min=Consts.MIN_PASSWORD_LENGTH))
 
     @staticmethod

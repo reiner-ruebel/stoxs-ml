@@ -1,8 +1,13 @@
 import os
 from typing import Optional
 
+from flask import Response, jsonify
+
 from app.shared.utils import get_application_path, get_module_names
 from app.shared.consts import Consts
+
+
+Response_c = tuple[Response, int]
 
 _bp_dot_root = Consts.BP_ROOT.replace('/', '.')
 
@@ -38,3 +43,18 @@ def get_container(module: str) -> Optional[str]:
     else:
         return None
 
+
+def create_response_c(input: dict | str, status_code: int | None=None, ok: bool=True) -> Response_c:
+    """
+    Creates a tuple of a response and a status code.
+    If the input is a string, it will be converted to a dictionary with the key 'message' or 'error' depending on the status code.
+    If the status code is not provided, it will be set to 200 if ok is True, otherwise it will be set to 400.
+    """
+
+    if status_code is None:
+        status_code = 200 if ok else 400
+
+    json_input: dict = input if isinstance(input, dict) else {'message' if status_code == 200 else "error": input}
+    response: Response = jsonify(json_input)
+
+    return (response, status_code)
