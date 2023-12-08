@@ -4,8 +4,8 @@ Pre-registered users can register and then log in. Registered users can use the 
 
 from typing import cast
 
-from flask import Blueprint, request, jsonify, Response
-from flask_security import password_complexity_validator
+from flask import Blueprint, request, Response
+from flask_security import password_complexity_validator, hash_password
 from marshmallow import ValidationError
 
 from app.core.application.extensions import security
@@ -44,7 +44,10 @@ def register() -> Response_c:
 
         RegisterSchema.check_username_vs_mailaddress(data)
         
-        user = security.datastore.create_user(**register_data)
+        data["password"] = hash_password(password)
+        data["active"] = "False" # user needs to confirm email address first
+        
+        user = security.datastore.create_user(**data)
         return create_response_c("Registration successful")
 
     except ValidationError as err:

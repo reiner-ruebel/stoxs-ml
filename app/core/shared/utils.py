@@ -34,7 +34,7 @@ def get_middlewares() -> list[str]:
     for middleware in os.listdir(os.path.join(get_application_path(), Consts.MIDDLEWARE)):
         if os.path.isfile(os.path.join(get_application_path(), Consts.MIDDLEWARE, middleware)):
             if middleware.endswith(".py") and (middleware != "__init__.py"):    
-                middlewares.append(middleware)
+                middlewares.append(Consts.MIDDLEWARE.replace("/", ".") + "." + middleware[:-3])
 
     return middlewares
     

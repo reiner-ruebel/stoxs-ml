@@ -16,5 +16,5 @@ class RegisterSchema(Schema):
 
     @staticmethod
     def check_username_vs_mailaddress(data: dict[str, str]) -> None:
-        if valid_mail_address(data['user_name'] and data['user_name'].lower() != data['email_address'].lower()):
+        if valid_mail_address(data['username']) and data['username'].lower() != data['email'].lower():
             raise ValidationError("Username cannot be an email address unless it matches your email address.")

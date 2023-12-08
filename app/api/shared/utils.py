@@ -44,7 +44,7 @@ def get_container(module: str) -> Optional[str]:
         return None
 
 
-def create_response_c(input: dict | str, status_code: int | None=None, ok: bool=True) -> Response_c:
+def create_response_c(input: dict | list[str] | str, status_code: int | None=None, ok: bool=True) -> Response_c:
     """
     Creates a tuple of a response and a status code.
     If the input is a string, it will be converted to a dictionary with the key 'message' or 'error' depending on the status code.

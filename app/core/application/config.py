@@ -23,6 +23,7 @@ class MailConfig:
 class BaseConfig(MailConfig):
     """ Default configuration options. This should never be used! """
     SITE_NAME: str = os.environ.get('APP_NAME', 'stoxs')
+    SECURITY_PASSWORD_SALT: str = os.environ.get('SECURITY_PASSWORD_SALT', 'stoxs')
     SECRET_KEY: str = 'not set in base'
     ENVIRONMENT = property(lambda self: self.__class__.__name__)
     DEBUG: bool = False
