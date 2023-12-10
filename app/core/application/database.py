@@ -18,7 +18,7 @@ def _create_db() -> SQLAlchemy:
 db: SQLAlchemy = _create_db()
 
 
-def db_commit_decorator(func):
+def _db_commit_decorator(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         try:
@@ -45,7 +45,7 @@ class CRUDMixin(Generic[T]):
         instance: T = cls(**kwargs)
         return instance.save()
 
-    @db_commit_decorator
+    @_db_commit_decorator
     def update(self: T, commit:bool=True, **kwargs) -> T:
         for attr, value in kwargs.items():
             setattr(self, attr, value)
@@ -53,14 +53,14 @@ class CRUDMixin(Generic[T]):
             self.save()
         return self
 
-    @db_commit_decorator
+    @_db_commit_decorator
     def save(self: T, commit:bool =True) -> T:
         db.session.add(self)
         if commit:
             db.session.commit()
         return self
 
-    @db_commit_decorator
+    @_db_commit_decorator
     def delete(self, commit:bool=True) -> None:
         db.session.delete(self)
         if commit:

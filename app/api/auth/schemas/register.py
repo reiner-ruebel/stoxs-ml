@@ -1,20 +1,21 @@
+from dataclasses import dataclass, field
+from typing import Optional
+
+from marshmallow import validate
+from marshmallow_dataclass import class_schema
+
 from app.shared.consts import Consts
 
-from marshmallow import Schema, fields, validate, ValidationError
 
-from app.shared.utils import valid_mail_address
+@dataclass
+class RegisterModel:
+    """ Register model """
+    firstname: str = field(metadata={"validate": validate.Length(max=Consts.MAX_NAME_LENGTH, min=1)})
+    surname: str = field(metadata={"validate": validate.Length(max=Consts.MAX_NAME_LENGTH, min=1)})
+    username: str = field(metadata={"validate": validate.Length(max=Consts.MAX_NAME_LENGTH, min=1)})
+    email: str = field(metadata={"validate": validate.Email(), "validate": validate.Length(max=Consts.MAX_EMAIL_LENGTH)})
+    password: str = field(metadata={"validate": validate.Length(max=Consts.MAX_PASSWORD_LENGTH, min=Consts.MIN_PASSWORD_LENGTH)})
+    middlename: Optional[str] = field(default=None, metadata={"validate": validate.Length(max=Consts.MAX_NAME_LENGTH)})
+    title: Optional[str] = field(default=None, metadata={"validate": validate.Length(max=Consts.MAX_NAME_LENGTH)})
 
-
-class RegisterSchema(Schema):
-    firstname = fields.Str(required=True, validate=validate.Length(max=Consts.MAX_NAME_LENGTH, min=1))
-    middlename = fields.Str(max=Consts.MAX_NAME_LENGTH)
-    surname = fields.Str(required=True, validate=validate.Length(max=Consts.MAX_NAME_LENGTH, min=1))
-    title = fields.Str(max=Consts.MAX_NAME_LENGTH)
-    username = fields.Str(required=True, validate=validate.Length(max=Consts.MAX_NAME_LENGTH, min=1))
-    email = fields.Email(required=True, validate=validate.Length(max=Consts.MAX_EMAIL_LENGTH))
-    password = fields.Str(required=True, validate=validate.Length(max=Consts.MAX_PASSWORD_LENGTH, min=Consts.MIN_PASSWORD_LENGTH))
-
-    @staticmethod
-    def check_username_vs_mailaddress(data: dict[str, str]) -> None:
-        if valid_mail_address(data['username']) and data['username'].lower() != data['email'].lower():
-            raise ValidationError("Username cannot be an email address unless it matches your email address.")
+RegisterSchema = class_schema(RegisterModel)
