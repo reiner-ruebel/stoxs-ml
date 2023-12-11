@@ -1,6 +1,8 @@
 import os
 import re
 
+from app.core.application.config import config
+
 def module_name_to_url_prefix(module_name: str) -> tuple[str, str]:
     """ Converts a module name like app.auth.register to the default name ('register') and url_prefix ('/app/auth') of a flask blueprint """
 
@@ -24,3 +26,13 @@ def get_module_names(folder: str) -> list[str]:
 def get_application_path() -> str:
     """ Returns the root path of the application """
     return os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+
+def is_development() -> bool:
+    """ returns True if this is a development environment """
+    return config.ENVIRONMENT == 'development'
+
+
+def is_production() -> bool:
+    """ returns True if this is a production environment """
+    return not is_development()

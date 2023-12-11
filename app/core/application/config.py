@@ -19,12 +19,15 @@ load_dotenv('.flaskenv')
 
 class CustomConfig:
     """ Customer configuration settings to support specific password policies etc. """
+    # explicit password requirements
     CUSTOM_REQUIRE_UPPERCASE: bool = True
     CUSTOM_REQUIRE_LOWERCASE: bool = True
     CUSTOM_REQUIRE_DIGITS: bool = True
     CUSTOM_SPECIAL_CHARS: Optional[str] = '!@#%^&*()_+{}:"<>?[]\;\',./|`~' # Note: char '$' not in list
+
     CUSTOM_USERNAME_NOT_DIFFERENT_FROM_MAIL: bool = True # if the username is a mail address it must be the same as the user's mail address
-    CUSTOM_SEED_EMAIL: str = os.environ.get('CUSTOM_SEED_EMAIL', 'admin.user@appmanager.com')
+    CUSTOM_SEED_EMAIL: str = os.environ.get('CUSTOM_SEED_EMAIL', 'not-a-valid-email-address') # Need to be overwritten to avoid to have a valid mail address in the code / source control
+    CUSTOM_RESET_CODE: str = os.environ.get('CUSTOM_RESET_CODE', '1234567890') # needed to reset and seed the DB. Only possible in dev env. Not a "secure" pw, intended to avoid accidental resets.
     
 
 class SecurityConfig:

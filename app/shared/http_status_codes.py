@@ -58,26 +58,17 @@ class HttpStatusCodes:
     HTTP_511_NETWORK_AUTHENTICATION_REQUIRED = 511
 
 
-    def is_informational(self):
-        # 1xx
-        pass
+def is_informational(status_code: int) -> bool:
+    return status_code >= 100 and status_code < 200
 
+def is_success(status_code: int) -> bool:
+    return status_code >= 200 and status_code < 300
 
-    def is_success(self):
-        # 2xx
-        pass
+def is_redirect(status_code: int) -> bool:
+    return status_code >= 300 and status_code < 400
 
+def is_client_error(status_code: int) -> bool:
+    return status_code >= 400 and status_code < 500
 
-    def is_redirect(self):
-        # 3xx
-        pass
-
-
-    def is_client_error(self):
-        # 4xx
-        pass
-
-
-    def is_server_error(self):
-        # 5xx
-        pass
+def is_server_error(status_code: int) -> bool:
+    return status_code >= 500 and status_code < 600

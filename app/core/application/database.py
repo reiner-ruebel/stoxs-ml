@@ -46,7 +46,7 @@ class CRUDMixin(Generic[T]):
         return instance.save()
 
     @_db_commit_decorator
-    def update(self: T, commit:bool=True, **kwargs) -> T:
+    def update(self: T, commit: bool=True, **kwargs) -> T:
         for attr, value in kwargs.items():
             setattr(self, attr, value)
         if commit:
@@ -54,14 +54,14 @@ class CRUDMixin(Generic[T]):
         return self
 
     @_db_commit_decorator
-    def save(self: T, commit:bool =True) -> T:
+    def save(self: T, commit: bool=True) -> T:
         db.session.add(self)
         if commit:
             db.session.commit()
         return self
 
     @_db_commit_decorator
-    def delete(self, commit:bool=True) -> None:
+    def delete(self, commit: bool=True) -> None:
         db.session.delete(self)
         if commit:
             db.session.commit()

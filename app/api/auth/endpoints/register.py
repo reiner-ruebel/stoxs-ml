@@ -6,18 +6,19 @@ from typing import cast, Any, Optional
 
 from marshmallow import ValidationError
 from flask import Blueprint, request
-from flask_security import password_complexity_validator, hash_password
+from flask_security import password_complexity_validator, hash_password, send_mail
 
 from app.core.application.blueprints import get_blueprint
 from app.core.application.extensions import security
+from app.core.security.user import User
 from app.core.security.security_service import user_policy_checker
 from app.api.shared.utils import Response_c, create_response_c
 from app.api.auth.models.register import RegisterModel, RegisterSchema
 
 
-blueprint: Blueprint = get_blueprint(__name__)
+_blueprint: Blueprint = get_blueprint(__name__)
 
-@blueprint.post("/register")
+@_blueprint.post("/register")
 def register() -> Response_c:
     """ Registers a new user. """
 
@@ -46,8 +47,17 @@ def register() -> Response_c:
         register_raw_data["password"] = cast(str, hash_password(register_model.password))
         register_raw_data["active"] = False # user needs to confirm email address first
         
-        user = security.datastore.create_user(**register_raw_data)
-        user.save()
+        user: User = security.datastore.create_user(**register_raw_data)
+        user.save() # default is to commit
+        
+        send_mail(
+            subject = "Confirm registration",
+            recipients = [user.email],
+            template = "security/email/welcome",
+            user = user,
+            confirmation_link = security._ctx.confirm_register_link(user.registration_token),
+        ) # type: ignore # pylint: disable=protected-access #)
+        
 
         return create_response_c("Registration mail sent. Please confirm to finish your registration.")
 

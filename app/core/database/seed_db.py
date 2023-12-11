@@ -8,6 +8,7 @@ from sqlalchemy.orm import declarative_base
 from flask_security.datastore import UserDatastore
 
 from app.shared.consts import Consts
+from app.shared.utils import is_development
 from app.core.application.extensions import security
 from app.core.application.config import CustomConfig
 from app.core.security.roles import roles
@@ -57,6 +58,9 @@ class DbSeeder:
 
     def reset(self) -> None:
         """ Resets the DB. The user datastore and the pre-register are truncated. Then the DB is seeded again. """
+        if not is_development():
+            raise RuntimeError("Reset operation is not allowed in this environment")        
+
         try:
             # Start a transaction
             self.db.session.begin()

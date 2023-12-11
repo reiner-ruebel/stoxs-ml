@@ -5,6 +5,7 @@ from flask import Response, jsonify
 
 from app.shared.utils import get_application_path, get_module_names
 from app.shared.consts import Consts
+from app.shared.http_status_codes import HttpStatusCodes, is_success
 
 
 Response_c = tuple[Response, int]
@@ -52,9 +53,9 @@ def create_response_c(input: dict | list[str] | str, status_code: int | None=Non
     """
 
     if status_code is None:
-        status_code = 200 if ok else 400
+        status_code = HttpStatusCodes.HTTP_200_OK if ok else HttpStatusCodes.HTTP_400_BAD_REQUEST
 
-    json_input: dict = input if isinstance(input, dict) else {'message' if status_code == 200 else "error": input}
+    json_input: dict = input if isinstance(input, dict) else {'message' if is_success(status_code) else "error": input}
     response: Response = jsonify(json_input)
 
     return (response, status_code)
