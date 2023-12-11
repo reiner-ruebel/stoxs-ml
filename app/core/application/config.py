@@ -24,6 +24,7 @@ class CustomConfig:
     CUSTOM_REQUIRE_DIGITS: bool = True
     CUSTOM_SPECIAL_CHARS: Optional[str] = '!@#%^&*()_+{}:"<>?[]\;\',./|`~' # Note: char '$' not in list
     CUSTOM_USERNAME_NOT_DIFFERENT_FROM_MAIL: bool = True # if the username is a mail address it must be the same as the user's mail address
+    CUSTOM_SEED_EMAIL: str = os.environ.get('CUSTOM_SEED_EMAIL', 'admin.user@appmanager.com')
     
 
 class SecurityConfig:

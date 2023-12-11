@@ -5,6 +5,14 @@ from marshmallow import validate
 from marshmallow_dataclass import class_schema
 
 from app.shared.consts import Consts
+from app.core.application.database import db
+
+
+@dataclass
+class PreRegisterModel(db.Model): # type: ignore
+    """ Users who register themselves must be pre-registered. """
+    __tablename__ = Consts.DB_PRE_REGISTER
+    email = db.Column(db.String(Consts.MAX_EMAIL_LENGTH), primary_key=True)
 
 
 @dataclass
