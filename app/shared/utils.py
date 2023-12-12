@@ -3,6 +3,7 @@ import re
 
 from app.core.application.config import config
 
+
 def module_name_to_url_prefix(module_name: str) -> tuple[str, str]:
     """ Converts a module name like app.auth.register to the default name ('register') and url_prefix ('/app/auth') of a flask blueprint """
 

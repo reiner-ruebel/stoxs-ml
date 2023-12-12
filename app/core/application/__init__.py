@@ -39,10 +39,11 @@ def create_app() -> Flask:
     for error_code, handler in error_handlers: # error handlers
         app.register_error_handler(error_code, handler.handle_error)
         
-    with app.app_context():
-        db_seeder = DbSeeder(db)
-        if db_seeder.seed_needed():
-            db_seeder.seed_db()
+    if config.CUSTOM_MIGRATION != 'true': # seed DB if needed. Skip this step when running migrations.
+        with app.app_context():
+            db_seeder = DbSeeder(db)
+            if db_seeder.seed_needed():
+                db_seeder.seed_db()
 
     return app
  

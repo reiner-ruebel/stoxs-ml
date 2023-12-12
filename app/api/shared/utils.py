@@ -1,7 +1,7 @@
 import os
-from typing import Optional
+from typing import Optional, Any, cast
 
-from flask import Response, jsonify
+from flask import Response, jsonify, Request
 
 from app.shared.utils import get_application_path, get_module_names
 from app.shared.consts import Consts
@@ -59,3 +59,9 @@ def create_response_c(input: dict | list[str] | str, status_code: int | None=Non
     response: Response = jsonify(json_input)
 
     return (response, status_code)
+
+
+def create_data(request: Request) -> Optional[dict[str, Any]]:
+    """ Returns the json data of a request casted to a dicr or None if no data was provided """
+    json_data = request.json
+    return None if json_data is None else cast(dict[str, Any], json_data)

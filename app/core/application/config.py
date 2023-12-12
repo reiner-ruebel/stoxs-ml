@@ -27,7 +27,10 @@ class CustomConfig:
 
     CUSTOM_USERNAME_NOT_DIFFERENT_FROM_MAIL: bool = True # if the username is a mail address it must be the same as the user's mail address
     CUSTOM_SEED_EMAIL: str = os.environ.get('CUSTOM_SEED_EMAIL', 'not-a-valid-email-address') # Need to be overwritten to avoid to have a valid mail address in the code / source control
+    CUSTOM_SEED_ROLE: str = os.environ.get('CUSTOM_SEED_ROLE', '')
     CUSTOM_RESET_CODE: str = os.environ.get('CUSTOM_RESET_CODE', '1234567890') # needed to reset and seed the DB. Only possible in dev env. Not a "secure" pw, intended to avoid accidental resets.
+    
+    CUSTOM_MIGRATION: str = os.environ.get('CUSTOM_MIGRATION', 'false') # Set to 'true' to indicate the a DB migration is happening.
     
 
 class SecurityConfig:
@@ -58,7 +61,7 @@ class BaseConfig(CustomConfig, SecurityConfig, MailConfig):
     """ Default configuration options. This should never be used! """
     SITE_NAME: str = os.environ.get('APP_NAME', 'stoxs')
     SECRET_KEY: str = 'not set in base'
-    ENVIRONMENT = property(lambda self: self.__class__.__name__)
+    ENVIRONMENT = os.environ.get('FLASK_ENV', 'development')
     DEBUG: bool = False
 
     SQLALCHEMY_DATABASE_URI: str = os.getenv('SQLALCHEMY_DATABASE_URI', 'sqlite:///default.db')

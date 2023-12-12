@@ -1,7 +1,6 @@
 from typing import Type
 
 from flask_sqlalchemy import SQLAlchemy
-from itsdangerous import exc
 from sqlalchemy import inspect
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import declarative_base
@@ -26,23 +25,21 @@ class DbSeeder:
 
     def seed_needed(self) -> bool:
         """ Check if the 'user' and 'pre_register' tables exist """
-
-        engine: Engine = self.db.engine
-        inspector = inspect(engine)
-
-        # if either of the tables does not exist we are not able to seed
-        if 'user' not in inspector.get_table_names() or Consts.DB_PRE_REGISTER not in inspector.get_table_names():
+        
+        # If we do not have any tables yet, we do not need to seed any data. In fact, we would not be able to do this.
+        if not self._userstore_available():
             return False
 
-        # if the pre_register table is empty we need to seed
-        return not PreRegisterModel.query.get(CustomConfig.CUSTOM_SEED_EMAIL)
+        # If the pre_register table is empty we need to seed the tables.
+        seed_mail = PreRegisterModel.query.get(CustomConfig.CUSTOM_SEED_EMAIL)
+        return seed_mail is None
 
 
     def seed_db(self) -> None:
         """ Seed the database with defined roles, permissions and the pre_register table. """
 
         if not PreRegisterModel.query.get(CustomConfig.CUSTOM_SEED_EMAIL):
-            pre_register = PreRegisterModel(email=CustomConfig.CUSTOM_SEED_EMAIL)
+            pre_register = PreRegisterModel(email=CustomConfig.CUSTOM_SEED_EMAIL, role=CustomConfig.CUSTOM_SEED_ROLE)
             self.db.session.add(pre_register)
 
         us: UserDatastore = security.datastore
@@ -58,8 +55,12 @@ class DbSeeder:
 
     def reset(self) -> None:
         """ Resets the DB. The user datastore and the pre-register are truncated. Then the DB is seeded again. """
+
         if not is_development():
-            raise RuntimeError("Reset operation is not allowed in this environment")        
+            raise RuntimeError("Reset operation is not allowed in this environment")
+        
+        if not self._userstore_available():
+            raise RuntimeError("Userstore is not available")
 
         try:
             # Start a transaction
@@ -76,13 +77,17 @@ class DbSeeder:
             self.db.session.rollback()
             raise e
 
-        # Seed the database if needed
-        if self.seed_needed():
-            self.seed_db()
-        else:
-            raise Exception("DB does not need to be seeded during the reset")
+        self.seed_db()
+        
 
+    def _userstore_available(self) -> bool:
+        engine: Engine = self.db.engine
+        inspector = inspect(engine)
 
+        # if either of the tables does not exist we are not able to operate
+        return True if 'user' in inspector.get_table_names() and Consts.DB_PRE_REGISTER in inspector.get_table_names() else False
+
+        
     def _reset_users_and_roles(self) -> None:
         """ Use datastore's methods to first delete users and then safely empty the roles table. """
         for user in security.datastore.user_model.query.all():

@@ -1,4 +1,3 @@
-from ast import Str
 from typing import Union, TypedDict
 
 from .permissions import Permissions
@@ -32,12 +31,12 @@ roles: list[_RoleDict] = [
     },
     {
         'name': Roles.STOXS_BASE,
-        'description': 'Machine learning stoxs',
-        'permissions': [Permissions.STOXS_GET, Permissions.STOXS_ML]
+        'description': 'stoxs get data',
+        'permissions': [Permissions.STOXS_GET]
     },
     {
         'name': Roles.STOXS_PRO,
-        'description': 'stoxs get data',
-        'permissions': [Permissions.STOXS_GET,]
+        'description': 'Machine learning stoxs',
+        'permissions': [Permissions.STOXS_GET, Permissions.STOXS_ML]
     },
 ]
