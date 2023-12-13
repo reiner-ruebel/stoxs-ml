@@ -3,6 +3,7 @@ Configurations for Flask, DB, ...
 """
 
 import os
+from datetime import timedelta
 from typing import Optional
 
 from dotenv import load_dotenv
@@ -34,24 +35,30 @@ class CustomConfig:
     
 
 class SecurityConfig:
-    """ flask-security-too settings """
+    """ flask-security-too settings. This is for API-only (no CSRF setting). """
     SECURITY_PASSWORD_SALT: str = os.environ.get('SECURITY_PASSWORD_SALT', 'some_salt')
     SECURITY_PASSWORD_LENGTH_MIN: str = os.environ.get('SECURITY_PASSWORD_LENGTH_MIN', '12')
     SECURITY_PASSWORD_COMPLEXITY_CHECKER: Optional[str] = 'zxcvbn' # as of version 5.3.2, only zxcvbn is supported
     SECURITY_ZXCVBN_MINIMUM_SCORE: int = 4
     SECURITY_PASSWORD_CHECK_BREACHED: Optional[str] = 'best-effort'
-    SECURITY_TRACKABLE: bool = True
+    SECURITY_USERNAME_ENABLE: bool = True # Docu: when set to True, will add support for the user to register a username in addition to an email.
+    SECURITY_CSRF_IGNORE_UNAUTH_ENDPOINTS: bool = True # Docu: If set to True, CSRF protection will be ignored for unauthenticated endpoints. Defaults to False.
+    SECURITY_FRESHNESS = timedelta(seconds=-1) # Docu: if < 0 => SECURITY_VERIFY_URL endpoint won’t be registered.
+    SECURITY_LOGIN_URL: str = '/__hugodeppschannsup knidde  ldiduppeldi_schnockinger' # try to avoid login page
 
 
 class MailConfig:
     """ SMTP settings """
-    MAIL_SERVER: str = os.environ.get('MAIL_SERVER', 'my.smtp.server')
-    MAIL_BACKEND: str = 'smtp'
-    MAIL_PORT: int = 587
+    # backend
+    MAIL_BACKEND: str = 'smtp' # 'smtp' (default), 'sendmail', 'file', 'locmem', 'console', 'dummy'. If TESTING=True, the default is 'locmem'
+    MAIL_PORT: int = 587 # (Usually) the SSL / TLS settings convert to the following ports: False / False => 25, True / False => 465, False / True => 587 (True / True => not possible)
     MAIL_USE_TLS: bool = True
-    MAIL_USERNAME: str = os.environ.get('MAIL_USERNAME', 'username')
+    MAIL_USE_SSL: bool = False
+    # account
+    MAIL_SERVER: str = os.environ.get('MAIL_SERVER', 'smtp-host-server')
     MAIL_PASSWORD: str = os.environ.get('MAIL_PASSWORD', '********')
-    MAIL_DEFAULT_SENDER: str = os.environ.get('MAIL_DEFAULT_SENDER', 'username@company.com')
+    MAIL_USERNAME: str = os.environ.get('MAIL_USERNAME', 'smtp-user-name')
+    MAIL_DEFAULT_SENDER: str = os.environ.get('MAIL_DEFAULT_SENDER', 'support@company.com')
 
 
 #
