@@ -1,14 +1,899 @@
-{# This template receives the following context:
-  confirmation_link - the link that should be fetched (GET) to confirm
-  confirmation_token - this token is part of confirmation link - but can be used to
-    construct arbitrary URLs for redirecting.
-  user - the entire user model object
-  security - the Flask-Security configuration
-#}
-<p>{{ _fsdomain('Welcome %(email)s!', email=user.email) }}</p>
-{% if security.confirmable %}
-  <p>{{ _fsdomain('You can confirm your email through the link below:') }}</p>
-  <p>
-    <a href="{{ confirmation_link }}">{{ _fsdomain('Confirm my account') }}</a>
-  </p>
-{% endif %}
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+  <!--[if gte mso 9]><xml> <o:OfficeDocumentSettings> <o:AllowPNG/> <o:PixelsPerInch>96</o:PixelsPerInch> </o:OfficeDocumentSettings> </xml><![endif]-->
+  <title>
+    {{TITLE}}
+  </title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0 ">
+  <meta name="format-detection" content="telephone=no">
+  <style type="text/css">
+    body {
+      margin: 0;
+      padding: 0;
+      -webkit-text-size-adjust: 100% !important;
+      -ms-text-size-adjust: 100% !important;
+      -webkit-font-smoothing: antialiased !important;
+    }
+
+    img {
+      border: 0 !important;
+      outline: none !important;
+    }
+
+    p {
+      Margin: 0px !important;
+      Padding: 0px !important;
+    }
+
+    table {
+      border-collapse: collapse;
+      mso-table-lspace: 0px;
+      mso-table-rspace: 0px;
+    }
+
+    td, a, span {
+      border-collapse: collapse;
+      mso-line-height-rule: exactly;
+    }
+
+    .ExternalClass * {
+      line-height: 100%;
+    }
+
+    .center table {
+      width: 100% !important;
+    }
+
+    .em_black a {
+      color: #333333;
+      text-decoration: underline;
+    }
+
+    .em_black2 a {
+      color: #000000;
+      text-decoration: none;
+    }
+
+    .em_blue a {
+      color: #002776;
+      text-decoration: none;
+    }
+
+    .em_blue2 a {
+      color: #009fda;
+      text-decoration: none;
+    }
+
+    .em_black3 a {
+      color: #009fda;
+      text-decoration: underline;
+    }
+
+    .em_black4 a {
+      color: #888888;
+      text-decoration: none;
+    }
+
+    .em_black5 a {
+      color: #444444;
+      text-decoration: none;
+    }
+
+    .em_white a {
+      color: #ffffff;
+      text-decoration: none;
+    }
+
+    @media only screen and (min-width:481px) and (max-width:649px) {
+      .em_main_table {
+        width: 100% !important;
+      }
+
+      .em_wrapper {
+        width: 100% !important;
+      }
+
+      .em_hide {
+        display: none !important;
+      }
+
+      .em_full_img {
+        width: 100% !important;
+        height: auto !important;
+        max-width: none !important;
+      }
+
+        .em_full_img img {
+          width: 100% !important;
+          height: auto !important;
+        }
+
+      .em_center {
+        text-align: center !important;
+      }
+
+      .em_side10 {
+        width: 10px !important;
+      }
+
+      .em_aside {
+        padding: 20px 10px !important;
+      }
+
+      .em_aside1 {
+        padding: 10px 10px !important;
+      }
+
+      .em_ptop {
+        padding-top: 20px !important;
+      }
+
+      .em_pbottom {
+        padding-bottom: 20px !important;
+      }
+
+      .em_h20 {
+        height: 20px !important;
+        font-size: 1px !important;
+        line-height: 1px !important;
+      }
+
+      .em_h30 {
+        height: 30px !important;
+      }
+
+      .em_mob_block {
+        display: block !important;
+      }
+
+      .em_hauto {
+        height: auto !important;
+      }
+
+      .em_clear {
+        clear: both !important;
+        width: 100% !important;
+        display: block !important;
+      }
+
+      .em_font_30 {
+        font-size: 27px !important;
+        line-height: 30px !important;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      .em_main_table {
+        width: 100% !important;
+      }
+
+      .em_wrapper {
+        width: 100% !important;
+      }
+
+      .em_hide {
+        display: none !important;
+      }
+
+      .em_full_img {
+        width: 100% !important;
+        height: auto !important;
+        max-width: none !important;
+      }
+
+        .em_full_img img {
+          width: 100% !important;
+          height: auto !important;
+        }
+
+      .em_center {
+        text-align: center !important;
+      }
+
+      .em_side10 {
+        width: 10px !important;
+      }
+
+      .em_aside {
+        padding: 20px 10px !important;
+      }
+
+      .em_aside1 {
+        padding: 10px 10px !important;
+      }
+
+      .em_aside2 {
+        padding: 20px 10px 0px 10px !important;
+      }
+
+      .em_ptop {
+        padding-top: 20px !important;
+      }
+
+      .em_pbottom {
+        padding-bottom: 20px !important;
+      }
+
+      .em_h20 {
+        height: 20px !important;
+        font-size: 1px !important;
+        line-height: 1px !important;
+      }
+
+      .em_h30 {
+        height: 30px !important;
+      }
+
+      .em_mob_block {
+        display: block !important;
+      }
+
+      .em_hauto {
+        height: auto !important;
+      }
+
+      .em_clear {
+        clear: both !important;
+        width: 100% !important;
+        display: block !important;
+      }
+
+      u + .em_body .em_full_wrap {
+        width: 100% !important;
+        width: 100vw !important;
+      }
+
+      .em_w143 {
+        width: 110px !important;
+        height: auto !important;
+      }
+
+      .em_font_12 {
+        font-size: 10px !important;
+        line-height: 16px !important;
+      }
+
+      .em_font_14 {
+        font-size: 12px !important;
+        line-height: 16px !important;
+      }
+
+      .em_font_24 {
+        font-size: 22px !important;
+        line-height: 26px !important;
+      }
+
+      .em_font_30 {
+        font-size: 25px !important;
+        line-height: 28px !important;
+      }
+
+      .em_font_20 {
+        font-size: 19px !important;
+        line-height: 23px !important;
+      }
+    }
+  </style>
+</head>
+<body class="em_body" style="margin:0px auto; padding:0px;" bgcolor="#f4fcff">
+  <style type="text/css">
+    div.preheader {
+      display: none !important;
+    }
+  </style>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="em_full_wrap" bgcolor="#f4fcff">
+    <tbody>
+      <!-- PreHeader Section -->
+      <tr>
+        <td align="center" valign="top">
+          <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tbody><tr><td class="stylingblock-content-wrapper camarker-inner"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tbody><tr><td class="stylingblock-content-wrapper camarker-inner"></td></tr></tbody></table></td></tr></tbody></table>
+
+        </td>
+      </tr>
+      <!-- //PreHeader Section -->
+      <!-- Title Section -->
+      <tr>
+        <td align="center" valign="top">
+          <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper">
+            <tbody>
+              <tr>
+                <td class="stylingblock-content-wrapper camarker-inner">
+                  <!--   --><table align="center" bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" class="em_main_table" style="width:650px;" width="650">
+
+                    <tbody>
+                      <tr>
+                        <td align="center" valign="top">
+                          <table border="0" cellpadding="0" cellspacing="0" class="em_wrapper" style="width:650px;" width="650">
+
+                            <tbody>
+                              <tr>
+                                <td align="center" class="em_aside" style="padding:30px 25px;" valign="top">
+                                  <table border="0" cellpadding="0" cellspacing="0" width="100%">
+
+                                    <tbody>
+                                      <tr>
+                                        <td align="center" valign="top">
+                                          <table align="left" border="0" cellpadding="0" cellspacing="0" class="em_wrapper" style="width:185px;" width="185">
+
+                                            <tbody>
+                                              <tr>
+                                                <td align="left" class="em_pbottom" valign="top">
+                                                  <a data-linkto="https://" href="https://click.email.hays.com/?qs=dd0efba003810f01fe1007ea25ceaaeb1e74ff27835f281453935cce4e0fbbeda47271cc3fc1b8deea469d3a1908219d6151a8b730cf39fa" title=""><img alt="Hays - Working For Your Tomorrow" data-assetid="7454" height="33" src="./HAYS Working for your tomorrow_files/Hays+Logo+Standard+RE+no+rand.png" style="width: 276px; height: 33px; display: block; min-height: auto; padding: 0px; text-align: center;" width="276"></a>
+                                                </td>
+                                              </tr>
+                                            </tbody>
+                                          </table><table align="right" border="0" cellpadding="0" cellspacing="0" class="em_wrapper em_hide">
+
+                                            <tbody>
+                                              <tr>
+                                                <td align="center" valign="top">
+                                                  <table align="center" border="0" cellpadding="0" cellspacing="0">
+
+                                                    <tbody>
+                                                      <tr>
+                                                        <td style="width:10px;" width="10">
+                                                          <img alt="" border="0" height="1" src="./HAYS Working for your tomorrow_files/b5ebba4d-8f37-4f60-90ae-e6e91308d57c.gif" style="display:block;" width="1">
+                                                        </td>
+                                                        <td align="center" style="width:22px;" valign="top" width="22">
+                                                          <a data-linkto="https://" href="https://click.email.hays.com/?qs=dd0efba003810f0110d46671aec09428d3a5a68e3a4756332389e09e16b9115e71320e2b66390f5d3337d85dcce4546f4d98bd13048e48e2" style="text-decoration:none;" target="_blank" title="Hays LinkedIn"><img data-assetid="166755" height="22" src="./HAYS Working for your tomorrow_files/linkedin.png" style="display: block; font-family: Arial, Helvetica, sans-serif; font-size: 16px; line-height: 20px; color: rgb(0, 0, 0); max-width: 22px; padding: 0px; height: 22px; width: 22px;" width="22"></a>
+                                                        </td>
+                                                        <td style="width:10px;" width="10">
+                                                          <img alt="" border="0" height="1" src="./HAYS Working for your tomorrow_files/b5ebba4d-8f37-4f60-90ae-e6e91308d57c.gif" style="display:block;" width="1">
+                                                        </td>
+                                                        <td align="center" style="width:22px;" valign="top" width="22">
+                                                          <a data-linkto="https://" href="https://click.email.hays.com/?qs=dd0efba003810f01278d71ef955217baf857c9c940cf0ee49bcaf6718aac0861d96eae1f945a835ade8fe34c2d1b6c90a5becefef2ea5f23" style="text-decoration:none;" target="_blank" title="Hays XING"><img data-assetid="50419" height="22" src="./HAYS Working for your tomorrow_files/xingicon.png" style="display: block; font-family: Arial, Helvetica, sans-serif; font-size: 16px; line-height: 20px; color: rgb(0, 0, 0); max-width: 22px; padding: 0px; height: 22px; width: 22px;" width="22"></a>
+                                                        </td>
+                                                        <td style="width:10px;" width="10">
+                                                          <img alt="" border="0" height="1" src="./HAYS Working for your tomorrow_files/b5ebba4d-8f37-4f60-90ae-e6e91308d57c.gif" style="display:block;" width="1">
+                                                        </td>
+                                                        <td align="center" style="width:22px;" valign="top" width="22">
+                                                          <a data-linkto="https://" href="https://click.email.hays.com/?qs=dd0efba003810f012c1542f003d8bb0d8ce0b24d06b3ce80c17e6c885c70b157e98663bf3d1eef60c6e1f122e354512234c170ef8a135bf1" target="_blank" title="Hays Instagram"><img data-assetid="50352" height="22" src="./HAYS Working for your tomorrow_files/instagram.png" width="22"></a>
+                                                        </td>
+                                                        <td style="width:10px;" width="10">
+                                                          <img alt="" border="0" height="1" src="./HAYS Working for your tomorrow_files/b5ebba4d-8f37-4f60-90ae-e6e91308d57c.gif" style="display:block;" width="1">
+                                                        </td>
+                                                        <td align="center" style="width:22px;" valign="top" width="22">
+                                                          <a data-linkto="https://" href="https://click.email.hays.com/?qs=dd0efba003810f0171367f5d1c60e92e70d36ff37254c9e93b177135634701da01f4e9c22bf145abad2801cd037a18a643c83d964c6faeee" style="text-decoration:none;" target="_blank" title="Hays YouTube"><img data-assetid="50420" height="22" src="./HAYS Working for your tomorrow_files/youtube.png" style="display: block; font-family: Arial, Helvetica, sans-serif; font-size: 16px; line-height: 20px; color: rgb(0, 0, 0); max-width: 22px; padding: 0px; height: 22px; width: 22px;" width="22"></a>
+                                                        </td>
+                                                        <td style="width:10px;" valign="top" width="22">
+                                                        </td>
+                                                        <td style="width:10px;" width="10">
+                                                          <a data-linkto="https://" href="https://click.email.hays.com/?qs=dd0efba003810f01716a6bab072ba4c1f40009326a86a4e425ce376f181eeef1614bd223c873d88a9e88e768fbac57e0a331dcfd6eb66639" style="text-decoration:none;" target="_blank" title="Hays Podcast"><img data-assetid="161279" height="22" src="./HAYS Working for your tomorrow_files/podcast.png" width="22"></a>
+                                                        </td>
+                                                      </tr>
+                                                    </tbody>
+                                                  </table>
+                                                </td>
+                                              </tr>
+                                            </tbody>
+                                          </table>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </td>
+      </tr>
+      <!-- //Title Section -->
+      <!-- Banner Section -->
+      <tr>
+        <td align="center" valign="top">
+          <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper">
+            <tbody>
+              <tr>
+                <td class="stylingblock-content-wrapper camarker-inner">
+                  <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper">
+                    <tbody>
+                      <tr>
+                        <td class="stylingblock-content-wrapper camarker-inner">
+                          <table align="center" border="0" cellpadding="0" cellspacing="0" class="em_main_table" style="width:650px;" width="650">
+
+                            <tbody>
+                              <tr>
+                                <td align="center" valign="top">
+                                  <table border="0" cellpadding="0" cellspacing="0" class="em_wrapper" style="width:650px;" width="650">
+
+                                    <tbody>
+                                      <tr>
+                                        <td align="center" valign="top">
+                                          <a alias="" conversion="false" data-linkto="other" href="https://view.email.hays.com/?qs=991dd7c2268418b055025de2f06c92c61c7cb6d4246f84590ddc021775a49e2424c70a091e8a9d7cb45bf148445bad5ee4d8f34748e6fe5afbe49ec72f91e1c526804a6cdb97c87b225d470e1b9df4ca" style="text-decoration:none;" target="_blank" title=""><img alt="Erholsame Feiertage und einen guten Rutsch!" data-assetid="445060" src="./HAYS Working for your tomorrow_files/Endjahresgruss_DE_1950x900_SF.gif" style="height: auto; width: 100%; object-fit: cover; padding: 0px; text-align: center;" width="650"></a>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                </td>
+              </tr>
+            </tbody>
+          </table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper">
+            <tbody>
+              <tr>
+                <td class="stylingblock-content-wrapper camarker-inner">
+                  <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper">
+                    <tbody>
+                      <tr>
+                        <td class="stylingblock-content-wrapper camarker-inner">
+                          <table align="center" bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" class="em_main_table" style="width:650px;" width="650">
+
+                            <tbody>
+                              <tr>
+                                <td align="center" valign="top">
+                                  <table border="0" cellpadding="0" cellspacing="0" class="em_wrapper" style="width:650px;" width="650">
+
+                                    <tbody>
+                                      <tr>
+                                        <td align="center" class="em_aside" style="padding:20px 25px 10px 25px;" valign="top">
+                                          <table align="center" border="0" cellpadding="0" cellspacing="0" class="em_wrapper" style="width:600px;" width="600">
+
+                                            <tbody>
+                                              <tr>
+                                                <td align="left" class="em_black2" style="font-family:Arial, sans-serif; font-size:15px; line-height:24px; color:#000000; padding-bottom:12px;" valign="top">
+                                                  <span style="color:#002776;">
+                                                    <span style="font-size:15px;">
+                                                      <span style="font-family:Arial,Helvetica,sans-serif;">
+                                                        <b>
+                                                          Guten Tag Reiner Rübel,
+                                                        </b>
+                                                      </span>
+                                                    </span>
+                                                  </span><br>
+                                                  <br>
+                                                  <span style="color:#000000;"><span style="font-size:15px;"><span style="font-family:Arial,Helvetica,sans-serif;">wofür sind Sie im Jahr 2023 dankbar?</span></span></span><br>
+                                                  <br>
+                                                  <span style="color:#002776;"><span style="font-size:15px;"><span style="font-family:Arial,Helvetica,sans-serif;"><b>Wir bei Hays sind dankbar dafür, Menschen und Unternehmen bei ihrem Erfolg zu begleiten.</b></span></span></span><br>
+                                                  <br>
+                                                  <span style="color:#2dbad7;"><span style="font-size:15px;"><span style="font-family:Arial,Helvetica,sans-serif;">►</span></span></span><span style="color:#000000;"><span style="font-size:15px;"><span style="font-family:Arial,Helvetica,sans-serif;"><b> 18.425 Menschen</b> sind in ihre neue berufliche Herausforderung gestartet.</span></span></span><br>
+                                                  <br>
+                                                  <span style="color:#2dbad7;"><span style="font-size:15px;"><span style="font-family:Arial,Helvetica,sans-serif;">►</span></span></span><span style="color:#000000;">
+                                                    <span style="font-size:15px;">
+                                                      <span style="font-family:Arial,Helvetica,sans-serif;">
+                                                        Unser Angebot wurde um die wichtigen Geschäftsbereiche <b><a data-linkto="https://" href="https://click.email.hays.com/?qs=b6ee67dc38401d728a23a0a800e5c57f20953063268d93d83fa80c6d9a7ddf9b18161ad99361513e5ec90456fa383f6db844ba550e6b2d8e" style="color:#007FA9;text-decoration:none;" title="Procurement">Procurement</a></b>, <b><a data-linkto="https://" href="https://click.email.hays.com/?qs=b6ee67dc38401d72d878d548e998f05d14ca109d4aa6fb834c75aa2f5b8ee0e1ba7cc29375ac888117bf0bd43cc295d20369adb6028e4b17" style="color:#007FA9;text-decoration:none;" title="Green Business">Green Business</a></b> und <b>
+                                                          <a data-linkto="https://" href="https://click.email.hays.com/?qs=b6ee67dc38401d7236dc141f8380d1b937818d60430898a6ccd9b832a788c4006915e2a7ed8e8f2257b21b70d9fd22f4b9423cc46d1e1e03" style="color:#007FA9;text-decoration:none;" title="Education &amp; Lehrkräfterekrutierung">Education &amp; Lehrkräfterekrutierung</a>
+                                                        </b> erweitert, um noch mehr Talente und Unternehmen zusammen zu bringen.
+                                                      </span>
+                                                    </span>
+                                                  </span><br>
+                                                  <br>
+                                                  <span style="color:#2dbad7;"><span style="font-size:15px;"><span style="font-family:Arial,Helvetica,sans-serif;">►</span></span></span><span style="color:#000000;">
+                                                    <span style="font-size:15px;">
+                                                      <span style="font-family:Arial,Helvetica,sans-serif;">
+                                                        Für unser Corporate Volunteering-Programm <b><a data-linkto="https://" href="https://click.email.hays.com/?qs=b6ee67dc38401d725ae2b1132d2db20036e524ada777f68809554183184267c69bf6a78c12192c311a35502888ea39070fa0916fdf27ef4b" style="color:#007FA9;text-decoration:none;" title="„Helping for your tomorrow“ ">„Helping for your tomorrow“</a>&nbsp;</b>haben wir den <b>HR Excellence Award 2023 </b>in der Kategorie Nachhaltigkeitsmanagement &amp; Social Engagement gewonnen.<br>
+                                                        <br>
+                                                        Im Alltag verlieren wir oft den Blick für die schönen und wertvollen Dinge des Lebens. Jetzt, in dieser besonderen Zeit des Jahres, können wir innehalten und uns der vielen wundervollen Momente der zurückliegenden Monate bewusst werden.<br>
+                                                        <br>
+                                                        Wir wünschen Ihnen von ganzem Herzen schöne Feiertage, ein frohes und besinnliches Jahresende und einen glücklichen Start ins neue Jahr. <br>
+                                                        <br>
+                                                        Vielen Dank für Ihr Vertrauen und die gute Zusammenarbeit.   <br>
+                                                        <br>
+                                                         Kind regards,<br>
+                                                        <b>Your stoxs Team</b>
+                                                      </span>
+                                                    </span>
+                                                  </span>
+                                                </td>
+                                              </tr>
+                                            </tbody>
+                                          </table>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </td>
+      </tr>
+      <!-- //Banner Section -->
+      <!-- Title with Content Section -->
+      <tr>
+        <td align="center" valign="top">
+          <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper">
+            <tbody>
+              <tr>
+                <td class="stylingblock-content-wrapper camarker-inner">
+                  <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper">
+                    <tbody>
+                      <tr>
+                        <td class="stylingblock-content-wrapper camarker-inner">
+                          <table align="center" border="0" cellpadding="0" cellspacing="0" class="em_main_table" style="width:650px;" width="650">
+                            <tbody>
+                              <tr>
+                                <td align="center" valign="top">
+                                  <table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" class="em_wrapper" style="width:650px;" width="650">
+                                    <tbody>
+                                      <tr>
+                                        <td align="center" class="em_aside" style="padding:15px 25px 25px 25px;" valign="top">
+                                          <table align="center" border="0" cellpadding="0" cellspacing="0" class="em_wrapper" style="width:600px;" width="600">
+                                            <tbody>
+                                              <tr>
+                                                <td align="center" valign="top">
+                                                  <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+                                                    <tbody>
+                                                      <tr>
+                                                        <td align="left" class="em_black3 em_font_14" style="font-family:Arial, sans-serif; font-size:14px; line-height:18px; color:#333333; font-weight:bold;" valign="top">
+                                                        </td>
+                                                      </tr>
+                                                      <tr>
+                                                        <td align="left" class="em_black3 em_font_14" style="font-family:Arial, sans-serif; font-size:14px; line-height:18px; color:#333333; padding-bottom:10px;" valign="top">
+                                                          <span style="font-size:15px;">
+                                                            <span style="font-family:Arial,Helvetica,sans-serif;">
+                                                              <span style="color:#000000;">
+                                                                <b>
+                                                                  Corvendor
+                                                                </b>refining smart data
+                                                              </span>
+                                                            </span>
+                                                          </span>
+                                                        </td>
+                                                      </tr>
+                                                      <tr>
+                                                        <td align="left" class="em_black3 em_font_14" style="font-family:Arial, sans-serif; font-size:14px; line-height:18px; color:#333333;" valign="top">
+                                                          <p style="font-family: Arial, sans-serif; font-size: 15px; text-size-adjust: 100%; word-wrap: break-word; word-break: break-word; margin: 0px; color: rgb(51, 51, 51); background-color: rgb(255, 255, 255); line-height: 24px;">
+                                                            <br>
+                                                            <span style="font-size:15px;"><span style="color:#000000;">Corvendor GmbH</span></span>
+                                                          </p>
+                                                          <p class="Bodytext" style="font-family: Arial, sans-serif; text-size-adjust: 100%; word-wrap: break-word; word-break: break-word; margin: 0px 0px 0.0001pt; color: rgb(51, 51, 51); font-size: 14px; background-color: rgb(255, 255, 255);">
+                                                            <span style="font-size:15px;"><span style="color:#000000;">Geschäftsführer: Reiner Rübel</span></span>
+                                                          </p>
+                                                          <p class="Bodytext" style="font-family: Arial, sans-serif; text-size-adjust: 100%; word-wrap: break-word; word-break: break-word; margin: 0px 0px 0.0001pt; color: rgb(51, 51, 51); font-size: 14px; background-color: rgb(255, 255, 255);">
+                                                            <span style="font-size:15px;"><span style="color:#000000;">Sitz der Gesellschaft: Leipzig</span></span>
+                                                          </p>
+                                                          <p class="Bodytext" style="font-family: Arial, sans-serif; text-size-adjust: 100%; word-wrap: break-word; word-break: break-word; margin: 0px 0px 0.0001pt; color: rgb(51, 51, 51); font-size: 14px; background-color: rgb(255, 255, 255);">
+                                                            <span style="font-size:15px;"><span style="color:#000000;">Amtsgericht Leipzig, HRB 35529</span></span>
+                                                          </p>
+                                                          <p style="font-family: Arial, sans-serif; text-size-adjust: 100%; word-wrap: break-word; word-break: break-word; margin: 0px; color: rgb(51, 51, 51); font-size: 14px; background-color: rgb(255, 255, 255); line-height: 24px;">
+                                                            <span style="font-size:15px;"><span style="color:#000000;">USt-IdNr. DE 260016204</span></span>
+                                                            <br>
+                                                            <a data-linkto="https://" href="https://corvendor.com" style="color:#007FA9;text-decoration:none; font-weight:bold;" target="_blank" title="">corvendor.com</a>
+                                                          </p>
+                                                        </td>
+                                                      </tr>
+                                                    </tbody>
+                                                  </table>
+                                                </td>
+                                                <td>
+                                                  <img alt="" border="0" height="1" src="./HAYS Working for your tomorrow_files/Hays+H_REb.png" style="display:block;" width="1">
+                                                </td>
+                                                <td align="center" class="em_w143 em_hide" style="width:143px; padding-top:10px;" valign="top" width="143">
+                                                  <br>
+                                                  <br>
+                                                  <a data-linkto="http://" href="https://click.email.hays.com/?qs=b6ee67dc38401d7220004fe95613fa0d407575ccd6e49ac243dbec561374c620e82033bb865f124517d169adfdd41168c4c6964dc2ca06d1" title=""><img data-assetid="35866" src="./HAYS Working for your tomorrow_files/Hays+H_REb.png" style="padding: 0px; text-align: center; border: 0px solid transparent; height: auto; width: 100%;" width="165"></a>
+                                                </td>
+                                              </tr>
+                                            </tbody>
+                                          </table>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </td>
+      </tr>
+      <!-- //Title with Content Section -->
+      <!-- Background Section -->
+      <tr>
+        <td align="center" valign="top">
+          <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper">
+            <tbody>
+              <tr>
+                <td class="stylingblock-content-wrapper camarker-inner">
+                  <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper">
+                    <tbody>
+                      <tr>
+                        <td class="stylingblock-content-wrapper camarker-inner">
+                          <table align="center" bgcolor="#002776" border="0" cellpadding="0" cellspacing="0" class="em_main_table" style="width:650px; background-color:#002776;" width="650">
+
+                            <tbody>
+                              <tr>
+                                <td align="center" valign="top">
+                                  <table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" class="em_wrapper" style="width:650px; background-color:#002776;" width="650">
+
+                                    <tbody>
+                                      <tr>
+                                        <td align="center" class="em_aside" style="padding:20px 25px; " valign="top">
+                                          <table align="center" border="0" cellpadding="0" cellspacing="0" class="em_wrapper" style="width:600px;" width="600">
+
+                                            <tbody>
+                                              <tr>
+                                                <td align="center" valign="top">
+                                                  <table align="center" border="0" cellpadding="0" cellspacing="0" class="em_wrapper" style="width:600px;" width="600">
+
+                                                    <tbody>
+                                                      <tr>
+                                                        <td align="center" valign="middle">
+                                                          <table align="left" border="0" cellpadding="0" cellspacing="0" class="em_wrapper em_center" style="width:45px;" width="45">
+
+                                                            <tbody>
+                                                              <tr>
+                                                                <td align="left" class="em_center" style="padding: 10px 0px 0px 10px; " valign="top">
+                                                                  <a data-linkto="https://" href="https://click.email.hays.com/?qs=dd0efba003810f01b40dc6ad58611e7f972fed38634b020c41e666f0ef592704c894ad4aad52c3ce3e22efe972a81a92091821e620784810" title="Bewerbung hochladen"><img alt="Icon Bewerbung hochladen" data-assetid="356918" height="33" src="./HAYS Working for your tomorrow_files/Icon_CV_Upload_2x.png" style="padding: 0px; height: 33px; width: 33px; border: 0px;" width="33"></a>
+                                                                </td>
+                                                              </tr>
+                                                            </tbody>
+                                                          </table><table align="left" border="0" cellpadding="0" cellspacing="0" class="em_wrapper em_center" style="width:350px;" width="350">
+
+                                                            <tbody>
+                                                              <tr>
+                                                                <td align="left" class="em_white em_center em_aside" style="font-family:Arial, sans-serif; font-size:16px; line-height:26px; color:#ffffff; font-weight:bold; padding:0px 30px ;" valign="top">
+                                                                  Wir freuen uns, Sie auf<br>
+                                                                  Ihrem Karriereweg zu unterstützen!
+                                                                </td>
+                                                              </tr>
+                                                            </tbody>
+                                                          </table><table border="0" cellpadding="0" cellspacing="0" role="presentation">
+
+                                                            <tbody>
+                                                              <tr>
+                                                                <td align="center">
+                                                                  <table border="0" cellpadding="0" cellspacing="0" width="200px">
+
+                                                                    <tbody>
+                                                                      <tr>
+                                                                        <td bgcolor="#002776" style="color: #FFFFFF; background-color: #002776;  padding: 15px">
+                                                                          <a class="em_white" data-linkto="https://" href="https://click.email.hays.com/?qs=dd0efba003810f010347daeae98a202b5c8bef544b48bd5aff8441579cf1ef0a80102371d7dd4b011518764b94be3858eacc03b2d885ecfb" style="color:#FFFFFF;text-decoration:none; font-size: 16px; font-family: Arial, sans-serif; font-weight:bold; text-align: center; display: block; line-height: 100%; background-color: #002776; border: 2px solid #fff; padding: 10px;" target="_blank" title="CV Upload">CV-Upload</a>
+                                                                        </td>
+                                                                      </tr>
+                                                                    </tbody>
+                                                                  </table>
+                                                                </td>
+                                                              </tr>
+                                                            </tbody>
+                                                          </table>
+                                                        </td>
+                                                      </tr>
+                                                    </tbody>
+                                                  </table>
+                                                </td>
+                                              </tr>
+                                            </tbody>
+                                          </table>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </td>
+      </tr>
+      <!-- //Background Section -->
+      <!-- Two Column Section1 -->
+      <tr>
+        <td align="center" valign="top">
+        </td>
+      </tr>
+      <!-- //Two Column Section1 -->
+      <!-- Two Column Section2 -->
+      <tr>
+        <td align="center" valign="top">
+        </td>
+      </tr>
+      <!-- //Two Column Section2 -->
+      <!-- Two Column Section3 -->
+      <tr>
+        <td align="center" valign="top">
+        </td>
+      </tr>
+      <!-- //Two Column Section3 -->
+      <!-- Banner with Content Gray Bar Section -->
+      <tr>
+        <td align="center" valign="top">
+        </td>
+      </tr>
+      <!-- //Banner with Content Gray Bar Section -->
+      <!-- Banner with Content White Bar Section -->
+      <tr>
+        <td align="center" valign="top">
+        </td>
+      </tr>
+      <!-- //Banner with Content White Bar Section -->
+      <!-- Three Column Section1 -->
+      <tr>
+        <td align="center" valign="top">
+        </td>
+      </tr>
+      <!-- //Three Column Section1 -->
+      <!-- Title and Date with Content Section-->
+      <tr>
+        <td align="center" valign="top">
+        </td>
+      </tr>
+      <!-- //Title and Date with Content Section-->
+      <!-- Title  with Two Column Section1-->
+      <tr>
+        <td align="center" valign="top">
+        </td>
+      </tr>
+      <!-- //Title  with Two Column Section1-->
+      <!-- Title and Date with Content Gray Bar Section-->
+      <tr>
+        <td align="center" valign="top">
+        </td>
+      </tr>
+      <!-- //Title and Date with Content Gray Bar Section-->
+      <!-- Title  with Two Column Section2-->
+      <tr>
+        <td align="center" valign="top">
+        </td>
+      </tr>
+      <!--// Title  with Two Column Section2-->
+      <!-- Three Column Section2 -->
+      <tr>
+        <td align="center" valign="top">
+        </td>
+      </tr>
+      <!-- //Three Column Section2 -->
+      <!-- Right Image Left Content Section1 -->
+      <tr>
+        <td align="center" valign="top">
+        </td>
+      </tr>
+      <!-- //Right Image Left Content Section1 -->
+      <!-- Right Image Left Content Section2 -->
+      <tr>
+        <td align="center" valign="top">
+        </td>
+      </tr>
+      <!-- //Right Image Left Content Section2 -->
+      <!-- Locatie Section -->
+      <tr>
+        <td align="center" valign="top">
+        </td>
+      </tr>
+      <!-- //Locatie Section -->
+      <!-- Left CTA Right Content Section -->
+      <tr>
+        <td align="center" valign="top">
+        </td>
+      </tr>
+      <!-- //Left CTA Right Content Section -->
+      <!-- Title with Content Blue Bar Section -->
+      <tr>
+        <td align="center" valign="top">
+        </td>
+      </tr>
+      <!-- //Title with Content Blue Bar Section -->
+      <!-- Contact Section -->
+      <tr>
+        <td align="center" valign="top">
+        </td>
+      </tr>
+      <!-- //Contact Section -->
+      <!-- Footer Section -->
+      <tr>
+        <td align="center" valign="top">
+          <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper">
+            <tbody>
+              <tr>
+                <td class="stylingblock-content-wrapper camarker-inner">
+                  <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper">
+                    <tbody>
+                      <tr>
+                        <td class="stylingblock-content-wrapper camarker-inner">
+                          <table align="center" border="0" cellpadding="0" cellspacing="0" class="em_main_table" style="width:650px;" width="650">
+                            <tbody>
+                              <tr>
+                                <td align="center" style="border-collapse: collapse;mso-line-height-rule: exactly;" valign="top">
+                                  <table align="center" border="0" cellpadding="0" cellspacing="0" class="em_wrapper" style="table-layout: fixed;border-collapse: collapse;mso-table-lspace: 0px;mso-table-rspace: 0px;background-color: rgb(245, 245, 245);" width="650">
+                                    <tbody>
+                                      <tr>
+                                        <td align="center" class="row-inner f-size-0 element-pad" style="padding-top: 15px;padding-right: 10px;padding-bottom: 15px;padding-left: 10px;" valign="top">
+                                          <div class="stack-column stack-column-width" ee-percent-width="100" style="max-width: 640px; min-width: 100%; width: 100%;">
+                                            <table border="0" cellpadding="0" cellspacing="0" style="table-layout: auto;" width="100%">
+                                              <tbody>
+                                                <tr>
+                                                  <td align="left" class="col-inner ee_dropzone" dir="ltr">
+                                                    <table cellpadding="0" cellspacing="0" class="col-font-reset ee_element ee_textelement" data-title="Text" ee-type="element" style="background-color: rgb(245, 245, 245); table-layout: auto;" width="100%">
+                                                      <tbody>
+                                                        <tr>
+                                                          <td align="left" class="element-pad element-bord" valign="top">
+                                                            <div class="ee_editable">
+                                                              <p style="line-height: 14px; font-size: 9px; color: #000000;font-family: Arial, sans-serif;text-decoration: none;">
+                                                                Um sich von unseren Marketing E-Mails abzumelden,
+                                                                <a data-linkto="https://" href="https://click.email.hays.com/?qs=b6ee67dc38401d725e39cbd08a9fc2648fa257156631140003c0f99ac252fae0bd4f7a62e095f9f997149fdbf3651439583d7956f2e68d7603a88c1523df23fb" style="color:#00AEEF;text-decoration:none; font-size: 9px; font-family: Arial, sans-serif;" title="Abmelden">klicken Sie hier</a> (bitte beachten Sie, dass Sie möglicherweise dennoch weiterhin einige Service E-Mails erhalten).
+                                                                <b>
+                                                                  Weitere Informationen dazu, wie Sie Ihre Datenschutzrechte wahrnehmen können, einschließlich der Änderung Ihrer Marketingpräferenzen, finden Sie in unserer
+                                                                  <a data-linkto="https://" href="https://click.email.hays.com/?qs=b6ee67dc38401d721558192b7528bb14b0393e563dc71d808297b05a70004cce0db355a0e63a0cffe4a97d9d0fa6ecbe229932ac4ace8f46c5c07139a81ea139" style="color:#00AEEF;text-decoration:underline; font-size: 9px; font-family: Arial, sans-serif;text-decoration: none;" title="Datenschutz">Datenschutzerklärung</a>.
+                                                                </b>
+                                                                <br>
+                                                                © Copyright Hays plc, 2023. Das Wort HAYS, die H-Symbole, HAYS WORKING FOR YOUR TOMORROW und Powering the World of Work sowie damit verbundene Logos und Illustrationen sind eingetragene Markenzeichen der Hays plc. Die H-Symbole sind Originaldesigns, die in vielen Ländern geschützt sind. Alle Rechte vorbehalten.
+                                                              </p>
+                                                            </div>
+                                                          </td>
+                                                        </tr>
+                                                      </tbody>
+                                                    </table>
+                                                  </td>
+                                                </tr>
+                                              </tbody>
+                                            </table>
+                                          </div>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </td>
+      </tr>
+      <!-- //Footer Section -->
+      <tr>
+        <td class="em_hide" style="line-height:1px;min-width:650px;background-color:#ffffff;">
+          <img alt="" src="./HAYS Working for your tomorrow_files/spacer.gif" height="1" width="650" style="max-height:1px; min-height:1px; display:block; width:650px; min-width:650px;" border="0">
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>

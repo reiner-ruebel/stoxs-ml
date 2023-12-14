@@ -42,9 +42,9 @@ class SecurityConfig:
     SECURITY_ZXCVBN_MINIMUM_SCORE: int = 4
     SECURITY_PASSWORD_CHECK_BREACHED: Optional[str] = 'best-effort'
     SECURITY_USERNAME_ENABLE: bool = True # Docu: when set to True, will add support for the user to register a username in addition to an email.
-    SECURITY_CSRF_IGNORE_UNAUTH_ENDPOINTS: bool = True # Docu: If set to True, CSRF protection will be ignored for unauthenticated endpoints. Defaults to False.
-    SECURITY_FRESHNESS = timedelta(seconds=-1) # Docu: if < 0 => SECURITY_VERIFY_URL endpoint won’t be registered.
-    SECURITY_LOGIN_URL: str = '/__hugodeppschannsup knidde  ldiduppeldi_schnockinger' # try to avoid login page
+    SECURITY_CSRF_IGNORE_UNAUTH_ENDPOINTS: bool = True
+    SECURITY_FRESHNESS = timedelta(seconds=-1)
+    SECURITY_LOGIN_URL: str = '/' + os.environ.get('SECURITY_LOGIN_URL', 'try to avoid login page')
 
 
 class MailConfig:
@@ -61,18 +61,26 @@ class MailConfig:
     MAIL_DEFAULT_SENDER: str = os.environ.get('MAIL_DEFAULT_SENDER', 'support@company.com')
 
 
+class DbConfig:
+    SQLALCHEMY_DATABASE_URI: str = os.getenv('SQLALCHEMY_DATABASE_URI', 'sqlite:///default.db')
+    SQLALCHEMY_TRACK_MODIFICATIONS: bool = False    
+    
+
+class JwtConfig:
+    JWT_SECRET_KEY: str = os.environ.get('JWT_SECRET_KEY', 'set-the-key')
+
+
 #
 # base configuration
 #
-class BaseConfig(CustomConfig, SecurityConfig, MailConfig):
+
+class BaseConfig(CustomConfig, SecurityConfig, MailConfig, DbConfig, JwtConfig):
     """ Default configuration options. This should never be used! """
-    SITE_NAME: str = os.environ.get('APP_NAME', 'stoxs')
+    SITE_NAME: str = os.environ.get('APP_NAME', 'app')
     SECRET_KEY: str = 'not set in base'
     ENVIRONMENT = os.environ.get('FLASK_ENV', 'development')
     DEBUG: bool = False
 
-    SQLALCHEMY_DATABASE_URI: str = os.getenv('SQLALCHEMY_DATABASE_URI', 'sqlite:///default.db')
-    SQLALCHEMY_TRACK_MODIFICATIONS: bool = False    
 
 
 #

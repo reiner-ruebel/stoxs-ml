@@ -1,5 +1,7 @@
 from typing import Optional
 
+from flask_security import password_complexity_validator
+
 from app.core.security.user import User
 from app.core.application.config import CustomConfig
 from app.shared.utils import valid_mail_address
@@ -48,5 +50,9 @@ def user_policy_checker(password: str, mail: str, username: Optional[str]) -> Op
     if username and config.CUSTOM_USERNAME_NOT_DIFFERENT_FROM_MAIL:
         if valid_mail_address(username) and username.lower() != mail.lower():
             errors.append("Username cannot be an email address unless it matches your email address.")
+
+    validation_msgs = password_complexity_validator(password, is_register = True)
+    if validation_msgs:
+        errors.extend(validation_msgs)
 
     return errors if len(errors) > 0 else None
