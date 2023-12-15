@@ -2,7 +2,7 @@ from importlib import import_module
 
 from flask import Flask
 
-# Dependency Injection
+# Dependency injection: For testing purposes, etc., create replacement modules, such as extensions_test.
 from .config import config
 from .database import db
 from .blueprints import blueprints
@@ -23,7 +23,7 @@ def create_app() -> Flask:
 
     db.init_app(app) # database
 
-    for blueprint in blueprints: # blueprints
+    for blueprint in blueprints: # blueprints and namespaces
         app.register_blueprint(blueprint)
         
     for model in models: # models (migration). Mind the order: after db, before extensions
@@ -45,5 +45,17 @@ def create_app() -> Flask:
             if db_seeder.seed_needed():
                 db_seeder.seed_db()
 
+    @app.route("/show_routes")
+    def show_routes():
+        output = []
+        for rule in app.url_map.iter_rules():
+            methods = ','.join(sorted(rule.methods))
+            line = f"{rule.endpoint}: {methods} {rule.rule}"
+            output.append(line)
+
+        return '<br>'.join(output)
+
     return app
+
+
  

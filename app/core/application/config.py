@@ -25,13 +25,13 @@ class CustomConfig:
     CUSTOM_REQUIRE_LOWERCASE: bool = True
     CUSTOM_REQUIRE_DIGITS: bool = True
     CUSTOM_SPECIAL_CHARS: Optional[str] = '!@#%^&*()_+{}:"<>?[]\;\',./|`~' # Note: char '$' not in list
-
-    CUSTOM_USERNAME_NOT_DIFFERENT_FROM_MAIL: bool = True # if the username is a mail address it must be the same as the user's mail address
+    # seed database
     CUSTOM_SEED_EMAIL: str = os.environ.get('CUSTOM_SEED_EMAIL', 'not-a-valid-email-address') # Need to be overwritten to avoid to have a valid mail address in the code / source control
     CUSTOM_SEED_ROLE: str = os.environ.get('CUSTOM_SEED_ROLE', '')
     CUSTOM_RESET_CODE: str = os.environ.get('CUSTOM_RESET_CODE', '1234567890') # needed to reset and seed the DB. Only possible in dev env. Not a "secure" pw, intended to avoid accidental resets.
-    
-    CUSTOM_MIGRATION: str = os.environ.get('CUSTOM_MIGRATION', 'false') # Set to 'true' to indicate the a DB migration is happening.
+    # other
+    CUSTOM_USERNAME_NOT_DIFFERENT_FROM_MAIL: bool = True # if the username is a mail address it must be the same as the user's mail address
+    CUSTOM_MIGRATION: str = os.environ.get('CUSTOM_MIGRATION', 'false') # Set to 'true' to indicate that a DB migration is happening.
     
 
 class SecurityConfig:
@@ -68,13 +68,19 @@ class DbConfig:
 
 class JwtConfig:
     JWT_SECRET_KEY: str = os.environ.get('JWT_SECRET_KEY', 'set-the-key')
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=1)
+    JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=30)
+
+
+class RestxConfig:
+    RESTX_ERROR_404_HELP: str = 'false'
 
 
 #
 # base configuration
 #
 
-class BaseConfig(CustomConfig, SecurityConfig, MailConfig, DbConfig, JwtConfig):
+class BaseConfig(CustomConfig, SecurityConfig, MailConfig, DbConfig, JwtConfig, RestxConfig):
     """ Default configuration options. This should never be used! """
     SITE_NAME: str = os.environ.get('APP_NAME', 'app')
     SECRET_KEY: str = 'not set in base'

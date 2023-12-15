@@ -14,6 +14,7 @@ _bp_dot_root = Consts.BP_ROOT.replace('/', '.')
 
 def endpoints(container: str) -> list[str]:
     """ Returns a list of all endpoints within a blueprint container """
+
     modules: list[str] = get_module_names(os.path.join(get_application_path(), Consts.BP_ROOT, container, Consts.ENDPOINTS))
     return [f"{_bp_dot_root}.{container}.{Consts.ENDPOINTS}.{module}" for module in modules]
 
@@ -21,11 +22,6 @@ def endpoints(container: str) -> list[str]:
 def container_import_name(container: str) -> str:
     """ Returns the import name of a blueprint container """
     return f"{Consts.BP_ROOT.replace('/', '.')}.{container}"
-
-
-def container_url_prefix(container: str) -> str:
-    """ Returns the container url prefix of a blueprint container """
-    return f"/{Consts.BP_ROOT}/{container}"
 
 
 def get_container(module: str) -> Optional[str]:
