@@ -32,6 +32,7 @@ class CustomConfig:
     # other
     CUSTOM_USERNAME_NOT_DIFFERENT_FROM_MAIL: bool = True # if the username is a mail address it must be the same as the user's mail address
     CUSTOM_MIGRATION: str = os.environ.get('CUSTOM_MIGRATION', 'false') # Set to 'true' to indicate that a DB migration is happening.
+    CUSTOM_BASE_URL = os.environ.get('CUSTOM_BASE_URL', 'http://localhost:5000')
     
 
 class SecurityConfig:

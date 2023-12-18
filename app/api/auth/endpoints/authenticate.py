@@ -1,14 +1,14 @@
 from typing import cast
 
 from marshmallow import ValidationError
-from flask import Blueprint, request, current_app
+from flask import request, current_app
 from flask_jwt_extended import create_access_token, create_refresh_token, get_jwt_identity, jwt_required
 from flask_restx import Namespace, Resource # type: ignore
 from sqlalchemy import and_
 
 from app.shared.http_status_codes import HttpStatusCodes as c
 from app.core.security.user import User
-from app.api.shared.utils import Api_Response, create_data, create_response_c
+from app.api.shared.utils import Api_Response, create_data, create_api_response
 from app.api.auth.models.authenticate import AuthenticateModel, AuthenticateSchema
 
 
@@ -18,18 +18,16 @@ ns = Namespace("authenticate", description="pre-register a user who is allowed t
 @ns.route('/')
 class authenticate(Resource):
     def post(self) -> Api_Response:
-        USER_NOT_FOUND: str = "Credentials do not match."
-
         try:
             data = create_data(request)
 
             if data is None:
-                return create_response_c("No authentication data provided.", c.HTTP_401_UNAUTHORIZED)
+                return create_api_response("No authentication data provided.", c.HTTP_401_UNAUTHORIZED)
         
             authenticate_model: AuthenticateModel = AuthenticateSchema().load(data)
         
             if not authenticate_model.email and not authenticate_model.username or not authenticate_model.password:
-                return create_response_c("Either email or username and password are required.", c.HTTP_401_UNAUTHORIZED)
+                return create_api_response("Either email or username and password are required.", c.HTTP_401_UNAUTHORIZED)
 
             query_conditions = []
             if authenticate_model.username:
@@ -40,12 +38,12 @@ class authenticate(Resource):
             user = User.query.filter(and_(*query_conditions)).first() # if both, username and email are provided they both need to match.
 
             if user is None or not user.verify_password(authenticate_model.password):
-                return create_response_c(USER_NOT_FOUND, c.HTTP_401_UNAUTHORIZED)
+                return create_api_response("Credentials do not match.", c.HTTP_401_UNAUTHORIZED)
 
             access_token = create_access_token(identity=user)
             refresh_token = create_refresh_token(identity=user)
 
-            return create_response_c({
+            return create_api_response({
                 "message": "Authentication successful.",
                 "access_token": access_token,
                 "refresh_token": refresh_token,
@@ -54,4 +52,4 @@ class authenticate(Resource):
                 })
 
         except ValidationError as err:
-            return create_response_c(err.messages, ok = False)
+            return create_api_response(err.messages, ok = False)

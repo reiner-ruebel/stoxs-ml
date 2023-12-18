@@ -12,3 +12,8 @@ class Consts:
     
     # The following constants are used for the database.
     DB_PRE_REGISTER: str = "pre_register"
+    
+    # Texts used in the application.
+    ERROR = "error"
+    CODE = "code"
+    MESSAGE = "message"
