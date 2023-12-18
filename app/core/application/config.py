@@ -44,7 +44,6 @@ class SecurityConfig:
     SECURITY_USERNAME_ENABLE: bool = True # Docu: when set to True, will add support for the user to register a username in addition to an email.
     SECURITY_CSRF_IGNORE_UNAUTH_ENDPOINTS: bool = True
     SECURITY_FRESHNESS = timedelta(seconds=-1)
-    SECURITY_LOGIN_URL: str = '/' + os.environ.get('SECURITY_LOGIN_URL', 'try to avoid login page')
 
 
 class MailConfig:

@@ -14,6 +14,7 @@ from app.api.auth.models.authenticate import AuthenticateModel, AuthenticateSche
 
 ns = Namespace("authenticate", description="pre-register a user who is allowed to register himself")
 
+
 @ns.route('/')
 class authenticate(Resource):
     def post(self) -> Api_Response:

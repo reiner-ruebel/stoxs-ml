@@ -1,14 +1,48 @@
 from typing import cast, Optional
 from importlib import import_module
 
-from flask import Blueprint
+from flask import Blueprint, abort, current_app
 
 from app.core.shared.utils import get_containers, create_version
 from app.api.shared.utils import endpoints, get_container, module_import_name
 
 
-# A map of all blueprints (to be registered) by their container name
-_blueprints_map: dict[str, Blueprint] = {}
+#
+# blueprints that are not used but are required by flask-security-too.
+#
+
+not_used_blueprint = Blueprint('not_used_blueprint', __name__)
+
+@not_used_blueprint.route('/logout')
+def logout():
+    """We map the logout endpoint to 404. This is because we do not want to use the flask-security-too extension to logout."""
+    abort(404)
+
+
+@not_used_blueprint.route('/login')
+def login():
+    """We map the logout endpoint to 404. This is because we do not want to use the flask-security-too extension to login."""
+    abort(404)
+
+
+@not_used_blueprint.route("/show_routes")
+def show_routes():
+    """Quick overview of the routes of the application."""
+
+    output = []
+    for rule in current_app.url_map.iter_rules():
+        methods = ','.join(sorted(rule.methods))
+        line = f"{rule.endpoint}: {methods} {rule.rule}"
+        output.append(line)
+
+    return '<br>'.join(output)
+
+
+#
+# Automated blueprint scanning and creation
+#
+
+_blueprints_map: dict[str, Blueprint] = {'not_used_blueprint': not_used_blueprint} # A map of all blueprints (to be registered) by their container name
 
 
 def _create_blueprint(container: str) -> Blueprint:
