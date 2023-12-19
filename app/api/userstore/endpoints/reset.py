@@ -1,6 +1,7 @@
 from flask import current_app
 from flask_security import roles_required
 from flask_restx import Namespace, Resource # type: ignore
+from flask_jwt_extended import jwt_required
 
 from app.shared.http_status_codes import HttpStatusCodes
 from app.core.application.config import config
@@ -16,6 +17,7 @@ ns: Namespace = create_namespace(__file__)
 
 @ns.route('/')
 class reset_db(Resource):
+    @jwt_required(refresh=True)
     @roles_required(Permissions.APP_ADMIN)
     @validate_request(ResetInput)
     def post(self, model: ResetInput) -> Api_Response:

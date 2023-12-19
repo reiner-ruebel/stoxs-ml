@@ -21,8 +21,6 @@ from app.api.auth.models.register import PreRegisterModel, RegisterModel, Regist
 
 ns = Namespace("register", description="To register a user who has already been pre-registered")
 
-#_blueprint: Blueprint = get_blueprint_from_module(__name__)
-
 @ns.route("/")
 class Register(Resource):
     def post(self) -> Api_Response:
