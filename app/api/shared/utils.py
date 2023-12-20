@@ -1,12 +1,11 @@
 from dataclasses import fields as get_fields, is_dataclass
-from typing import Collection, Optional, Type, Union, Any, cast, get_type_hints, _GenericAlias
+from typing import Collection, Optional, Type, Union, Any, cast, get_type_hints, _GenericAlias # type: ignore
 import os
 from functools import wraps
 
-from flask_restx.reqparse import RequestParser
 from marshmallow import ValidationError
 from flask import Response, request, Request
-from flask_restx import Model as SwaggerModel, Namespace, fields
+from flask_restx import Api, Model as SwaggerModel, Namespace, fields # type: ignore
 
 from app.core.application.config import config
 from app.shared.utils import get_application_path, get_module_names, is_optional
@@ -33,7 +32,7 @@ def module_import_name(container: str) -> str:
 
 
 def get_container(module: str) -> str:
-    """Retrieves the container name (like 'auth') from an endpoint module, typically called like get_container(__name__)"""
+    """Retrieves the container name (like 'auth') from an endpoint module (app.api.auth.endpoints.register), typically called like get_container(__name__)"""
 
     segments = module.split(".")
 
@@ -148,37 +147,6 @@ def create_restx_model_names(module_name: str) -> tuple[str, str]:
     return Consts.SWAGGER_MODEL + name, Consts.RESPONSE_MODEL + name
 
 
-def create_parser(payload_model: Type) -> RequestParser:
-    """ Converts a payload model (dataclass) to a RequestParser to support Swagger. """
-
-    if not is_dataclass(payload_model):
-        raise TypeError("payload_model must be a dataclass")
-
-    parser = RequestParser()
-    type_hints = get_type_hints(payload_model)
-    
-    for field in get_fields(payload_model):
-        # Extract metadata
-        help_text = field.metadata.get("help", "")
-        field_name = field.name
-        field_type = type_hints[field_name]
-        this_type: Type = int
-        if field_type == str or (isinstance(field_type, _GenericAlias) and str in field_type.__args__):
-            this_type = str
-        required = not is_optional(field_type)
-
-        # Add argument to parser
-        parser.add_argument(
-            name=field.name, 
-            type=this_type, 
-            help=help_text, 
-            required=True, 
-            location='json' # Use 'json' for body parameters
-        )
-
-    return parser
-
-
 def create_swagger_model(payload_model: Type) -> SwaggerModel:
     """ Converts a payload model (dataclass) to a SwaggerModel (restx.Model) to support Swagger. """
 
@@ -194,7 +162,7 @@ def create_swagger_model(payload_model: Type) -> SwaggerModel:
         kwargs = {
             "title": field.metadata.get("title", None),
             "example": field.metadata.get("example", None),
-            "description": field.metadata.get("description", ""),
+            "description": field.metadata.get("description", None),
             "required": not is_optional(type_hints[field_name]),
             }
 
@@ -203,5 +171,19 @@ def create_swagger_model(payload_model: Type) -> SwaggerModel:
             model_fields[field_name] = fields.String(**kwargs)
         elif field_type == int or (isinstance(field_type, _GenericAlias) and int in field_type.__args__):
             model_fields[field_name] = fields.Integer(**kwargs)
+        elif field_type == int or (isinstance(field_type, _GenericAlias) and bool in field_type.__args__):
+            model_fields[field_name] = fields.Boolean(**kwargs)
          
     return SwaggerModel(payload_model.__name__, model_fields)
+
+
+def endpoint_package(module_name: str, payload_model: Type) -> tuple[Namespace, Api, SwaggerModel]:
+    """ Creates a tuple of a namespace, api and swagger model for a given module name. """
+
+    container = get_container(module_name)
+    namespace: create_namespace(module_name)
+    api: Api = Api(module_name)
+    swagger_model: SwaggerModel = create_swagger_model(payload_model)
+    api.models[container+"_"+swagger_model.name] = swagger_model
+
+    return (namespace, api, swagger_model)

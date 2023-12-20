@@ -1,6 +1,6 @@
 import os
 import re
-from typing import _GenericAlias
+from typing import _GenericAlias # type: ignore
 
 from app.core.application.config import config
 

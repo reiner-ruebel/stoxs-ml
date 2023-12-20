@@ -1,29 +1,25 @@
 from typing import cast, Any, Optional
-from flask_restx.namespace import RequestParser
 
 from marshmallow import ValidationError
 from sqlalchemy import Column
 from flask import current_app
 from flask_mailman import EmailMultiAlternatives # type: ignore
-from flask_restx import Api, Namespace, Resource, Model as SwaggerModel # type: ignore
 from flask_security import hash_password
+from flask_restx import Resource # type: ignore
 
-from app.core.application.apis import get_api
 from app.core.application.config import config
+from app.core.application.apis import get_api
 from app.core.application.extensions import security
 from app.core.security.user import User
 from app.core.mail.mail import render_template
 from app.core.security.security_service import user_policy_checker
-from app.api.shared.utils import Api_Response, create_swagger_model, create_api_response, create_namespace, create_parser, get_container, validate_request
-from app.api.auth.models.register import PayloadModel, PayloadSchema
-from app.api.auth.models.pre_register import PreRegisterModel
+from app.api.shared.utils import Api_Response, create_api_response, create_namespace, endpoint_package, validate_request
+
+from ..models.register import PayloadModel, PayloadSchema
+from ..models.pre_register import PreRegisterModel
 
 
-ns: Namespace = create_namespace(__name__)
-api: Api = get_api(__name__)
-# parser: RequestParser = create_parser(PayloadModel)
-swagger_model: SwaggerModel = create_swagger_model(PayloadModel)
-api.models[swagger_model.name] = swagger_model
+ns, api, swagger_model = endpoint_package(__name__, PayloadModel)
 
 @ns.route("/")
 class Register(Resource):

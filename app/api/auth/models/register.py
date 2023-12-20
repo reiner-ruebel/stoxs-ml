@@ -1,28 +1,25 @@
 from typing import Optional
-from dataclasses import dataclass, field
-from flask_restx.reqparse import Argument
-from flask_restx.swagger import RequestParser
+from dataclasses import dataclass
 
-from marshmallow import validate
 from marshmallow_dataclass import class_schema
 from flask_restx import fields, Model # type: ignore
 
-from app.shared.consts import Consts
 from app.api.shared.utils import create_restx_model_names
+from app.api.shared.documentation import common_fields
 
 
 @dataclass
 class PayloadModel:
     """Register payload model"""
-#    firstname: str = field(metadata={"validate": validate.Length(max=Consts.MAX_NAME_LENGTH, min=1), "help": f"First Name, max {Consts.MAX_NAME_LENGTH} long"}),
-    firstname: str = field(metadata={"validate": validate.Length(max=Consts.MAX_NAME_LENGTH, min=1), 'description': f"First Name, max {Consts.MAX_NAME_LENGTH} long", 'title': 'First Name', 'example': 'Peter'})
-    surname: str = field(metadata={"validate": validate.Length(max=Consts.MAX_NAME_LENGTH, min=1)})
-    email: str = field(metadata={"validate": validate.Email(), "validate": validate.Length(max=Consts.MAX_EMAIL_LENGTH)})
-    password: str = field(metadata={"validate": validate.Length(max=Consts.MAX_PASSWORD_LENGTH, min=Consts.MIN_PASSWORD_LENGTH)})
-    username: Optional[str] = field(default=None, metadata={"validate": validate.Length(max=Consts.MAX_NAME_LENGTH)})
-    middlename: Optional[str] = field(default=None, metadata={"validate": validate.Length(max=Consts.MAX_NAME_LENGTH)})
-    title: Optional[str] = field(default=None, metadata={"validate": validate.Length(max=Consts.MAX_NAME_LENGTH)})
-    number: Optional[int] = field(default=19, metadata={"validate": validate.Range(min=0, max=100), 'help': 'this is the help'})
+    
+    firstname: str = common_fields['firstname']
+    surname: str = common_fields['surname']
+    email: str = common_fields['email']
+    password: str = common_fields['password']
+    username: Optional[str] = common_fields['username']
+    middlename: Optional[str] = common_fields['middlename']
+    title: Optional[str] = common_fields['title']
+    
 
 PayloadSchema = class_schema(PayloadModel)
 
