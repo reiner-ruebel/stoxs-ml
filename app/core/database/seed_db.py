@@ -11,7 +11,7 @@ from app.shared.utils import is_development
 from app.core.application.extensions import security
 from app.core.application.config import CustomConfig
 from app.core.security.roles import roles
-from app.api.auth.models.register import PreRegisterModel
+from app.api.auth.models.pre_register import PreRegisterModel
 
 Base = declarative_base()
 

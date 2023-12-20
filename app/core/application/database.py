@@ -37,7 +37,7 @@ T = TypeVar('T', bound='db.Model') # type: ignore
 class CRUDMixin(Generic[T]):
 
     @classmethod
-    def get_by_id(cls : type[T], id: int) -> Optional[T]:
+    def get_by_id(cls: type[T], id: int) -> Optional[T]:
         return db.session.query(cls).get(id)
 
     @classmethod

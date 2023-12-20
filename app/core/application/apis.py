@@ -5,7 +5,18 @@ from flask_restx import Api, Namespace # type: ignore
 from app.core.application.blueprints import get_blueprint
 
 from app.core.shared.utils import get_containers, create_version
-from app.api.shared.utils import endpoints, module_import_name
+from app.api.shared.utils import endpoints, get_container, module_import_name
+from app.api.shared.documentation import descriptions
+
+
+_api_map: dict[str, Api] = {}
+
+
+def get_api(module_name: str) -> Api:
+    """ Returns the API object for the given container. """
+
+    container = get_container(module_name)
+    return _api_map[container]
 
 
 def _create_api(container: str) -> Api:
@@ -14,21 +25,24 @@ def _create_api(container: str) -> Api:
     The arguments for the API object are taken from the container module or set to defaults if they are not present.
     """
     bp: Blueprint = get_blueprint(container)
-    api_module = module_import_name(container)
+    api_module = import_module(module_import_name(container))
 
     # Default values for API configuration
     api_defaults = {
         'version': create_version(1),
-        'title': container,
-        'description': 'tbd',
-        'doc': '/docs',
-        'default': 'default'
+        'title': container.capitalize(),
+        'description': descriptions.get(container, 'detailed description tbd'),
+        'doc': '/swagger',
     }
 
     # Update defaults with any attributes found in the module
     kwargs = {attr: getattr(api_module, attr, default) for attr, default in api_defaults.items()}
+    
+    api = Api(bp, **kwargs)
 
-    return Api(bp, **kwargs)
+    _api_map[container] = api
+
+    return api
 
 
 def create_apis() -> None:

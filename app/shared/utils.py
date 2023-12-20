@@ -1,5 +1,6 @@
 import os
 import re
+from typing import _GenericAlias
 
 from app.core.application.config import config
 
@@ -37,3 +38,11 @@ def is_development() -> bool:
 def is_production() -> bool:
     """ returns True if this is a production environment """
     return not is_development()
+
+
+def is_optional(field_type) -> bool:
+    """Check if the field type is Optional[SomeType]."""
+
+    if isinstance(field_type, _GenericAlias):
+        return type(None) in field_type.__args__
+    return False

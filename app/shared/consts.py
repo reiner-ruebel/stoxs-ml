@@ -17,3 +17,6 @@ class Consts:
     ERROR = "error"
     CODE = "code"
     MESSAGE = "message"
+    
+    SWAGGER_MODEL = "SwaggerModel"
+    RESPONSE_MODEL = "ResponseModel"

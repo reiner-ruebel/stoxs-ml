@@ -73,9 +73,6 @@ def create_blueprints() -> None:
         bp: Blueprint = _create_blueprint(container)
         _blueprints_map[container] = bp
 
-        for endpoint in endpoints(container):
-            import_module(endpoint) # The module has access to its blueprint through the module name so it can define routes, etc.
-
 
 def get_blueprints() -> list[Blueprint]:
     """Returns all blueprints of the application."""

@@ -13,7 +13,7 @@ from app.api.shared.utils import Api_Response, create_api_response, create_names
 from ..models.reset import ResetInput
 
 
-ns: Namespace = create_namespace(__file__)
+ns: Namespace = create_namespace(__name__)
 
 @ns.route('/')
 class reset_db(Resource):

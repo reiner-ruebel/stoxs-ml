@@ -74,6 +74,7 @@ class JwtConfig:
 
 class RestxConfig:
     RESTX_ERROR_404_HELP: str = 'false'
+    RESTX_INCLUDE_ALL_MODELS: bool = True
 
 
 #

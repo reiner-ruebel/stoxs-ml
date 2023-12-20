@@ -12,4 +12,6 @@
 # Endpoints are documented using Swagger.
 #
 # Next to the endpoints there is a folder named models which contains the data models used by the namespaces of an API.
+#
+# Documented endpoint: see the auth/register endpoint which is fully documented and describes all conventions.
 # 
