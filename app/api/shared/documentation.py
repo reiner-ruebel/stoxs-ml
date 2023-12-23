@@ -1,4 +1,5 @@
 from dataclasses import field
+from importlib import metadata
 
 from marshmallow import validate
 
@@ -15,7 +16,9 @@ descriptions: dict[str, str] = {
 
 
 common_fields: dict[str, field] = {
-    "id": field(description="The unique identifier of the user."),
+    "id": field(metadata={
+        "description": "The unique identifier of the user."
+        }),
 
     "firstname": field(metadata={
         "validate": validate.Length(max=Consts.MAX_NAME_LENGTH, min=1),

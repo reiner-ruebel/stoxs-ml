@@ -1,15 +1,19 @@
-"""
-Starting point for the machine learning part of the Stoxs application: stoxs-ml.
-
-Please see the __init__.py files in the packages for detailed information!
-"""
-
 from flask import Flask
 
+from app.shared.utils import AppUtils
+from app.core.application.credentials import Credentials
 from app.core.application import create_app
 
 
-app: Flask = create_app()
+def main() -> None:
+    """Starting point of the flask application."""
+
+    AppUtils.set_application_path(__file__)
+
+    credentials: Credentials = Credentials()
+    app: Flask = create_app(credentials) # dependency injection
+    app.run()
+    
 
 if __name__ == "__main__":
-    app.run()
+    main()

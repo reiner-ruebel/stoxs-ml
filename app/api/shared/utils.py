@@ -5,10 +5,12 @@ from functools import wraps
 
 from marshmallow import ValidationError
 from flask import Response, request, Request
-from flask_restx import Api, Model as SwaggerModel, Namespace, fields # type: ignore
+from flask_restx import Api, Model as SwaggerModel, Namespace, fields
 
 from app.core.application.config import config
-from app.shared.utils import get_application_path, get_module_names, is_optional
+from app.core.application.apis import get_api
+from app.core.shared.utils import get_container
+from app.shared.utils import get_application_path, get_module_names, is_object_optional
 from app.shared.consts import Consts
 from app.shared.http_status_codes import HttpStatusCodes, is_success
 from app.api.shared.errors import error_map
@@ -29,20 +31,6 @@ def endpoints(container: str) -> list[str]:
 def module_import_name(container: str) -> str:
     """Returns the import name of the module of a blueprint container. Example: 'auth' => 'app.api.auth'"""
     return f"{Consts.BP_ROOT.replace('/', '.')}.{container}"
-
-
-def get_container(module: str) -> str:
-    """Retrieves the container name (like 'auth') from an endpoint module (app.api.auth.endpoints.register), typically called like get_container(__name__)"""
-
-    segments = module.split(".")
-
-    endpoints_index = segments.index(Consts.ENDPOINTS)
-
-    if endpoints_index >= 1:
-        parent_directory = segments[endpoints_index - 1]
-        return parent_directory
-    else:
-        raise Exception("no endpoint")
 
 
 def create_api_response(message: dict | list[str] | str, status_code: int | None=None, ok: bool=True) -> Api_Response:
@@ -163,7 +151,7 @@ def create_swagger_model(payload_model: Type) -> SwaggerModel:
             "title": field.metadata.get("title", None),
             "example": field.metadata.get("example", None),
             "description": field.metadata.get("description", None),
-            "required": not is_optional(type_hints[field_name]),
+            "required": not is_object_optional(field_type),
             }
 
         # Map Python types to Flask-RESTx fields
@@ -182,8 +170,8 @@ def endpoint_package(module_name: str, payload_model: Type) -> tuple[Namespace, 
 
     container = get_container(module_name)
     namespace: create_namespace(module_name)
-    api: Api = Api(module_name)
+    api: Api = get_api(module_name)
     swagger_model: SwaggerModel = create_swagger_model(payload_model)
-    api.models[container+"_"+swagger_model.name] = swagger_model
+    api.models[container+"_"+swagger_model.name] = swagger_model # register the model with the api
 
     return (namespace, api, swagger_model)

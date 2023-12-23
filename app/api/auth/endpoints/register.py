@@ -5,7 +5,7 @@ from sqlalchemy import Column
 from flask import current_app
 from flask_mailman import EmailMultiAlternatives # type: ignore
 from flask_security import hash_password
-from flask_restx import Resource # type: ignore
+from flask_restx import Resource, marshal_with # type: ignore
 
 from app.core.application.config import config
 from app.core.application.apis import get_api
@@ -13,9 +13,9 @@ from app.core.application.extensions import security
 from app.core.security.user import User
 from app.core.mail.mail import render_template
 from app.core.security.security_service import user_policy_checker
-from app.api.shared.utils import Api_Response, create_api_response, create_namespace, endpoint_package, validate_request
+from app.api.shared.utils import Api_Response, create_api_response, endpoint_package, validate_request
 
-from ..models.register import PayloadModel, PayloadSchema
+from ..models.register import PayloadModel, PayloadSchema, response_model
 from ..models.pre_register import PreRegisterModel
 
 
@@ -25,6 +25,7 @@ ns, api, swagger_model = endpoint_package(__name__, PayloadModel)
 class Register(Resource):
     @ns.expect(swagger_model)
     @validate_request(PayloadModel)
+    @marshal_with(response_model, code=201)
     def post(self, payload: PayloadModel) -> Api_Response:
         """ Registers a new user. """
 

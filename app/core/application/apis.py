@@ -2,10 +2,11 @@ from importlib import import_module
 
 from flask import Blueprint
 from flask_restx import Api, Namespace # type: ignore
+
 from app.core.application.blueprints import get_blueprint
 
-from app.core.shared.utils import get_containers, create_version
-from app.api.shared.utils import endpoints, get_container, module_import_name
+from app.core.shared.utils import get_container, get_containers, create_version
+from app.api.shared.utils import endpoints, module_import_name
 from app.api.shared.documentation import descriptions
 
 

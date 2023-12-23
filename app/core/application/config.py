@@ -1,7 +1,3 @@
-"""
-Configurations for Flask, DB, ...
-"""
-
 import os
 from datetime import timedelta
 from typing import Optional
@@ -114,3 +110,17 @@ def _get_config() -> BaseConfig:
     return DevConfig() if os.environ.get('FLASK_ENV') == 'development' else ProdConfig()
 
 config: BaseConfig = _get_config()
+
+
+#
+# helper functions
+#
+
+def is_development() -> bool:
+    """ returns True if this is a development environment """
+    return config.ENVIRONMENT == 'development'
+
+
+def is_production() -> bool:
+    """ returns True if this is a production environment """
+    return not is_development()

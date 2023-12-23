@@ -10,7 +10,7 @@ from app.api.shared.documentation import common_fields
 
 @dataclass
 class PayloadModel:
-    """Register payload model"""
+    """ Register payload model """
     
     firstname: str = common_fields['firstname']
     surname: str = common_fields['surname']
@@ -20,7 +20,6 @@ class PayloadModel:
     middlename: Optional[str] = common_fields['middlename']
     title: Optional[str] = common_fields['title']
     
-
 PayloadSchema = class_schema(PayloadModel)
 
 
