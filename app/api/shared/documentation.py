@@ -1,69 +1,73 @@
-from dataclasses import field
-from importlib import metadata
+from typing import Optional
+from dataclasses import dataclass, field
 
 from marshmallow import validate
 
 from app.shared.consts import Consts
 
 
-descriptions: dict[str, str] = {
-    "admin": "Admin related functionality. Required role is admin.",
-    "auth": "Authentication related functionality.",
-    "userstore": "Userstore related functionality. Required role is admin.",
-    "userstore.reset": "Reset the database to default values. This is only available in development mode.",
-    "auth.register": "To register a user who has already been pre-registered",
-}
+@dataclass
+class CommonFields:
+    """Common fields for all models."""
 
-
-common_fields: dict[str, field] = {
-    "id": field(metadata={
+    ID: str = field(metadata={
         "description": "The unique identifier of the user."
-        }),
+        })
 
-    "firstname": field(metadata={
+    FIRSTNAME: str = field(metadata={
         "validate": validate.Length(max=Consts.MAX_NAME_LENGTH, min=1),
         'description': f"Max {Consts.MAX_NAME_LENGTH} chars",
         'title': 'First Name',
         'example': 'Peter'
-        }),
+        })
 
-    "surname": field(metadata={
+    SURNAME: str = field(metadata={
         "validate": validate.Length(max=Consts.MAX_NAME_LENGTH, min=1),
         "description": f"Max {Consts.MAX_NAME_LENGTH} chars",
         'title': 'Last Name',
         'example': 'Pan'
-        }),
+        })
 
-   "email": field(metadata={
+    EMAIL: str = field(metadata={
         "validate": [validate.Email(), validate.Length(max=Consts.MAX_EMAIL_LENGTH)],
         "description": f"Max {Consts.MAX_EMAIL_LENGTH} chars",
         'title': 'Email Address',
         'example': 'peter.pan@neverland.eu'
-        }),
+        })
 
-    "password": field(metadata={
+    PASSWORD: str = field(metadata={
         "validate": validate.Length(max=Consts.MAX_PASSWORD_LENGTH, min=Consts.MIN_PASSWORD_LENGTH),
         "description": f"Between {Consts.MIN_PASSWORD_LENGTH} and {Consts.MAX_PASSWORD_LENGTH} chars",
         'title': 'Password',
         'example': 'kogpwF!18&ei6%'
-        }),
+        })
 
-    "username": field(default=None, metadata={
+    USERNAME: Optional[str] = field(default=None, metadata={
         "validate": validate.Length(max=Consts.MAX_NAME_LENGTH),
         "description": f"Max {Consts.MAX_NAME_LENGTH} chars",
         'title': 'Username',
         'example': 'PeterPan'
-        }),
+        })
 
-    "middlename": field(default=None, metadata={
+    MIDDLENAME: Optional[str] = field(default=None, metadata={
         "validate": validate.Length(max=Consts.MAX_NAME_LENGTH),
         'title': 'Middle Name',
         'example': 'T.'
-        }),
+        })
 
-    "title": field(default=None, metadata={
+    TITLE: Optional[str] = field(default=None, metadata={
         "validate": validate.Length(max=Consts.MAX_NAME_LENGTH),
         'title': 'Title',
         'example': 'Prof.'
-        }),
-    } 
+        })
+
+
+@dataclass
+class ApiStrings:
+    DESCRIPTIONS: dict[str, str] = {
+        "admin": "Admin related functionality. Required role is admin.",
+        "auth": "Authentication related functionality.",
+        "userstore": "Userstore related functionality. Required role is admin.",
+        "userstore.reset": "Reset the database to default values. This is only available in development mode.",
+        "auth.register": "To register a user who has already been pre-registered",
+    }

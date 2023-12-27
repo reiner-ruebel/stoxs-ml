@@ -7,26 +7,37 @@ from pathlib import Path
 class AppUtils:
     """Support functions that are independent from the application."""
 
-    application_path = None  # Class-level attribute to store the application path
+    _application_path = None  # Class-level attribute to store the application path
+    _base_url: t.Optional[str] = None
 
     @classmethod
-    def set_application_path(cls, file_path: Path) -> None:
+    def get_base_url(cls) -> str:
+        """Returns the base url of the application."""
+
+        if cls._base_url is None:
+            cls._base_url = os.environ.get('CUSTOM_BASE_URL', 'http://localhost:5000')
+
+        return cls._base_url
+
+
+    @classmethod
+    def set_application_path(cls, file: str) -> None:
         """
         Set the application path to the directory containing the file.
         
         This should be called from main (AppUtils.set_application_path(__file__)) in order to have access to the root path.
         """
 
-        cls.application_path = Path(file_path).parent
+        cls._application_path = Path(file).parent
 
 
     @classmethod
     def get_application_path(cls) -> Path:
         """Returns the root path of the application."""
 
-        if cls.application_path is None:
+        if cls._application_path is None:
             raise ValueError("Application path has not been set.")
-        return cls.application_path
+        return cls._application_path
 
 
     @staticmethod
@@ -62,4 +73,14 @@ class AppUtils:
             return type(None) in t.get_args(field_type)
 
         return False
+    
+
+    @staticmethod
+    def get_leaf(module_name: str) -> str:
+        """
+        Returns the leaf of a module.
+        
+        Example: 'app.api.auth.endpoints.authenticate' => 'authenticate'
+        """
+        return module_name.split('.')[-1]
     

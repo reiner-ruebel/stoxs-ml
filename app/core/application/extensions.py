@@ -13,18 +13,22 @@ from flask_security import Security
 from flask_mailman import Mail # type: ignore
 from flask_jwt_extended import JWTManager
 
-from app.core.application.database import db
+from app.core.application.database import AppSql
 from app.core.security import user_datastore
 
+Extension = tuple[object, Callable[[Flask], None], dict[str, object]]
 
-migrate = Migrate()
-security = Security()
-mail = Mail()
-jwt = JWTManager()
+class Extensions:
+    _migrate = Migrate()
+    _security = Security()
+    _mail = Mail()
+    _jwt = JWTManager()
 
-extensions: list[tuple[object, Callable[[Flask], None], dict[str, object]]] = [
-    (migrate, migrate.init_app, {'db': db}),
-    (security, security.init_app, {'datastore': user_datastore}),
-    (mail, mail.init_app, {}),
-    (jwt, jwt.init_app, {}),
-]
+    @classmethod
+    def get_extensions(cls) -> list[Extension]:
+        return [
+            (cls._migrate, cls._migrate.init_app, {'db': AppSql.db}),
+            (cls._security, cls._security.init_app, {'datastore': user_datastore}),
+            (cls._mail, cls._mail.init_app, {}),
+            (cls._jwt, cls._jwt.init_app, {}),
+        ]

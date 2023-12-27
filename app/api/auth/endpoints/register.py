@@ -13,13 +13,14 @@ from app.core.application.extensions import security
 from app.core.security.user import User
 from app.core.mail.mail import render_template
 from app.core.security.security_service import user_policy_checker
-from app.api.shared.utils import Api_Response, create_api_response, endpoint_package, validate_request
+from app.api.shared.utils import Api_Response, create_api_response, validate_request
+from app.core.application.apis import Apis
 
 from ..models.register import PayloadModel, PayloadSchema, response_model
 from ..models.pre_register import PreRegisterModel
 
 
-ns, api, swagger_model = endpoint_package(__name__, PayloadModel)
+ns, swagger_model = Apis.endpoint_package(__name__, PayloadModel)
 
 @ns.route("/")
 class Register(Resource):

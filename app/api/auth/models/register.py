@@ -4,21 +4,21 @@ from dataclasses import dataclass
 from marshmallow_dataclass import class_schema
 from flask_restx import fields, Model # type: ignore
 
-from app.api.shared.utils import create_restx_model_names
-from app.api.shared.documentation import common_fields
+from app.api.shared.utils import ApiUtils
+from app.api.shared.documentation import CommonFields
 
 
 @dataclass
 class PayloadModel:
     """ Register payload model """
     
-    firstname: str = common_fields['firstname']
-    surname: str = common_fields['surname']
-    email: str = common_fields['email']
-    password: str = common_fields['password']
-    username: Optional[str] = common_fields['username']
-    middlename: Optional[str] = common_fields['middlename']
-    title: Optional[str] = common_fields['title']
+    firstname: str = CommonFields.FIRSTNAME
+    surname: str = CommonFields.SURNAME
+    email: str = CommonFields.EMAIL
+    password: str = CommonFields.PASSWORD
+    username: Optional[str] = CommonFields.USERNAME
+    middlename: Optional[str] = CommonFields.MIDDLENAME
+    title: Optional[str] = CommonFields.TITLE
     
 PayloadSchema = class_schema(PayloadModel)
 
@@ -27,7 +27,7 @@ class HugoName(fields.Raw):
     def format(self, value):
         return value + 'hugo'
 
-s_model, r_model = create_restx_model_names(__name__)
+s_model, r_model = ApiUtils.create_restx_model_names(__name__)
 
 _base_model = Model('RegisterBaseModel', {
     'firstname': fields.String(required=True, description='First name'),
