@@ -9,10 +9,10 @@ def main() -> None:
 
     AppUtils.set_application_path(__file__)
     AppComponents.initialize()  # Prepare dependency injection for the Flask application.
-
-    app = create_app()  # Standard factory pattern with the components created in AppComponents.
+    
+    app = create_app()
     app.run()
-        
+
     DbSeeder.seed_db()  # Only available in dev mode and if no migration is taking place.
             
 

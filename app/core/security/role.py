@@ -1,6 +1,6 @@
 from flask_security.models import fsqla_v3 as fsqla
 
-from app.core.application.app_components import AppComponents as C
+from app.core.application.database import db
 
-class Role(C.db.Model, fsqla.FsRoleMixin): # type: ignore
+class Role(db.Model, fsqla.FsRoleMixin): # type: ignore
     pass

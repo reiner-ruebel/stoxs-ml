@@ -6,7 +6,8 @@ from flask import Blueprint, request, current_app
 from flask_security import hash_password
 from flask_mailman import EmailMultiAlternatives # type: ignore
 
-from app.api.shared.utils import Api_Response, create_api_response
+from app.api.shared.utils import ApiUtils
+from app.shared.AppTypes import Api_Response
 
 
 ns = Namespace("refresh", description="Refresh token.")
@@ -17,7 +18,7 @@ class refresh(Resource):
     def post(self) -> Api_Response:
         identity = get_jwt_identity()
         access_token = create_access_token(identity=identity)
-        return create_api_response({
+        return ApiUtils.create_api_response({
                 "message": "Refresh successful.",
                 "access_token": access_token,
                 "access_token_expire_in_seconds": cast(int, current_app.config['JWT_ACCESS_TOKEN_EXPIRES'].total_seconds()),

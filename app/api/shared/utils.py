@@ -1,9 +1,9 @@
-from typing import Collection, Optional, Union, Any, cast # type: ignore
+from typing import Collection, Optional, Any, cast
 import os
 from functools import wraps
 
 from marshmallow import ValidationError
-from flask import Response, request, Request
+from flask import request, Request
 
 from app.shared.AppTypes import Api_Response
 from app.shared.utils import AppUtils

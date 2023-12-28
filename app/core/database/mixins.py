@@ -3,7 +3,7 @@ from functools import wraps
 
 from sqlalchemy.exc import SQLAlchemyError
 
-from app.core.application.app_components import AppComponents as C
+from app.core.application.database import db
 
 
 # Developer note: Could not get mypy to recognize the bound part of the type variable, so I had to use type: ignore.
@@ -22,7 +22,7 @@ class CrudMixin(t.Generic[T]):
                 result = func(*args, **kwargs)
                 return result
             except SQLAlchemyError as e:
-                C.db.session.rollback()
+                db.session.rollback()
                 raise
 
         return t.cast(F, wrapper)  # Cast to maintain the return type
@@ -30,7 +30,7 @@ class CrudMixin(t.Generic[T]):
 
     @classmethod
     def get_by_id(cls: type[T], id: int) -> t.Optional[T]:
-        return C.db.session.query(cls).get(id)
+        return db.session.query(cls).get(id)
 
 
     @classmethod
@@ -50,14 +50,14 @@ class CrudMixin(t.Generic[T]):
 
     @_db_commit_decorator
     def save(self: T, commit: bool=True) -> T:
-        C.db.session.add(self)
+        db.session.add(self)
         if commit:
-            C.db.session.commit()
+            db.session.commit()
         return self
 
 
     @_db_commit_decorator
     def delete(self, commit: bool=True) -> None:
-        C.db.session.delete(self)
+        db.session.delete(self)
         if commit:
-            C.db.session.commit()
+            db.session.commit()

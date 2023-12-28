@@ -62,8 +62,9 @@ class CommonFields:
         })
 
 
-@dataclass
 class ApiStrings:
+    """Strings used in the API."""
+
     DESCRIPTIONS: dict[str, str] = {
         "admin": "Admin related functionality. Required role is admin.",
         "auth": "Authentication related functionality.",

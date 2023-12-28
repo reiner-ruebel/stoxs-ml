@@ -22,7 +22,7 @@ class Apis:
     #
 
     @classmethod
-    def create_apis(cls) -> bool:
+    def create_apis(cls) -> None:
         """
         Creates all APIs and the corresponding namespaces.
         
@@ -39,8 +39,6 @@ class Apis:
                 ns: Namespace = getattr(endpoint_module, "ns", None)
                 if ns is not None:
                     api.add_namespace(ns)
-                    
-        return True
 
 
     @classmethod

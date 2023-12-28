@@ -10,6 +10,7 @@ from flask_restx import Resource, marshal_with # type: ignore
 
 from app.shared.consts import Consts
 from app.shared.AppTypes import Api_Response
+from app.core.application.config import config_object
 from app.core.application.app_components import AppComponents as C
 from app.core.security.security_service import SecurityService
 from app.core.security.user import User
@@ -57,7 +58,7 @@ class Register(Resource):
             user.save() # default is to commit
         
             # send welcome mail and return response
-            title: str = f"Welcome to {C.config_object.SITE_NAME}!"
+            title: str = f"Welcome to {config_object.SITE_NAME}!"
 
             kwargs: dict[str, str] = {
                 "TITLE": title
@@ -66,11 +67,11 @@ class Register(Resource):
             html, text = AppMail.render_template("welcome", **kwargs)
 
             with current_app.app_context():
-                msg = EmailMultiAlternatives(title, text, C.config_object.MAIL_DEFAULT_SENDER, [user.email])
+                msg = EmailMultiAlternatives(title, text, config_object.MAIL_DEFAULT_SENDER, [user.email])
                 msg.attach_alternative(html, "text/html")
                 msg.send()
 
-            return ApiUtils.create_api_response(f"Your welcome to {C.config_object.SITE_NAME}! An email has been sent to you. Once you receive it, you are ready to start working with the API.")
+            return ApiUtils.create_api_response(f"Your welcome to {config_object.SITE_NAME}! An email has been sent to you. Once you receive it, you are ready to start working with the API.")
 
         except ValidationError as err:
             return ApiUtils.create_api_response(err.messages, ok = False)

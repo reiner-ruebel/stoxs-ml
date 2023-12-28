@@ -8,7 +8,7 @@ from sqlalchemy import and_
 
 from app.shared.http_status_codes import HttpStatusCodes as c
 from app.core.security.user import User
-from app.api.shared.utils import Api_Response, create_data, create_api_response
+from app.api.shared.utils import Api_Response, ApiUtils
 from app.api.auth.models.authenticate import AuthenticateModel, AuthenticateSchema
 
 
@@ -19,15 +19,15 @@ ns = Namespace("authenticate", description="pre-register a user who is allowed t
 class authenticate(Resource):
     def post(self) -> Api_Response:
         try:
-            data = create_data(request)
+            data: dict[str, str] = {} # ApiUtils.create_data(request)
 
             if data is None:
-                return create_api_response("No authentication data provided.", c.HTTP_401_UNAUTHORIZED)
+                return ApiUtils.create_api_response("No authentication data provided.", c.HTTP_401_UNAUTHORIZED)
         
             authenticate_model: AuthenticateModel = AuthenticateSchema().load(data)
         
             if not authenticate_model.email and not authenticate_model.username or not authenticate_model.password:
-                return create_api_response("Either email or username and password are required.", c.HTTP_401_UNAUTHORIZED)
+                return ApiUtils.create_api_response("Either email or username and password are required.", c.HTTP_401_UNAUTHORIZED)
 
             query_conditions = []
             if authenticate_model.username:
@@ -38,12 +38,12 @@ class authenticate(Resource):
             user = User.query.filter(and_(*query_conditions)).first() # if both, username and email are provided they both need to match.
 
             if user is None or not user.verify_password(authenticate_model.password):
-                return create_api_response("Credentials do not match.", c.HTTP_401_UNAUTHORIZED)
+                return ApiUtils.create_api_response("Credentials do not match.", c.HTTP_401_UNAUTHORIZED)
 
             access_token = create_access_token(identity=user)
             refresh_token = create_refresh_token(identity=user)
 
-            return create_api_response({
+            return ApiUtils.create_api_response({
                 "message": "Authentication successful.",
                 "access_token": access_token,
                 "refresh_token": refresh_token,
@@ -52,4 +52,4 @@ class authenticate(Resource):
                 })
 
         except ValidationError as err:
-            return create_api_response(err.messages, ok = False)
+            return ApiUtils.create_api_response(err.messages, ok = False)

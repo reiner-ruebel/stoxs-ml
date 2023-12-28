@@ -7,7 +7,9 @@ from flask_security.core import Security
 from flask_security.datastore import UserDatastore
 
 from app.shared.consts import Consts
-from app.core.application.app_components import Config, AppComponents as C
+from app.core.application.config import Config, config_object
+from app.core.application.database import db
+from app.core.application.app_components import AppComponents as C
 from app.core.security.roles import roles
 from app.api.auth.models.pre_register import PreRegisterModel
 
@@ -31,17 +33,17 @@ class DbSeeder:
 
         try:
             # Start a transaction
-            C.db.session.begin()
+            db.session.begin()
 
             # Reset tables
             cls._reset_users_and_roles()
             cls._empty_table(PreRegisterModel)
 
             # Commit the transaction
-            C.db.session.commit()
+            db.session.commit()
 
         except Exception as e:
-            C.db.session.rollback()
+            db.session.rollback()
             raise e
 
         cls.seed_db()
@@ -54,9 +56,9 @@ class DbSeeder:
         if not cls.seed_needed():
             return
 
-        if not PreRegisterModel.query.get(C.config_object.CUSTOM_SEED_EMAIL):
-            pre_register = PreRegisterModel(email=C.config_object.CUSTOM_SEED_EMAIL, role=C.config_object.CUSTOM_SEED_ROLE)
-            C.db.session.add(pre_register)
+        if not PreRegisterModel.query.get(config_object.CUSTOM_SEED_EMAIL):
+            pre_register = PreRegisterModel(email=config_object.CUSTOM_SEED_EMAIL, role=config_object.CUSTOM_SEED_ROLE)
+            db.session.add(pre_register)
 
         us: UserDatastore = cls._security.datastore
 
@@ -66,7 +68,7 @@ class DbSeeder:
                 # Create the role if it doesn't exist
                 us.create_role(**role_data)
 
-        C.db.session.commit()
+        db.session.commit()
 
 
     @classmethod
@@ -81,13 +83,13 @@ class DbSeeder:
             return False
 
         # If the pre_register table is empty we need to seed the tables.
-        seed_mail = PreRegisterModel.query.get(C.config_object.CUSTOM_SEED_EMAIL)
+        seed_mail = PreRegisterModel.query.get(config_object.CUSTOM_SEED_EMAIL)
         return seed_mail is None
 
 
     @classmethod
     def _userstore_available(cls) -> bool:
-        engine: Engine = C.db.engine
+        engine: Engine = db.engine
         inspector = inspect(engine)
 
         # if either of the tables does not exist we are not able to operate
@@ -108,5 +110,5 @@ class DbSeeder:
     def _empty_table(cls, model: Type[Base]) -> None: # type: ignore
         """ Delete all records in the table """
 
-        C.db.session.query(model).delete()
-        C.db.session.commit()
+        db.session.query(model).delete()
+        db.session.commit()
