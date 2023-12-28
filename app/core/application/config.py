@@ -33,7 +33,7 @@ class _CustomConfig:
 
     # Other
     CUSTOM_USERNAME_NOT_DIFFERENT_FROM_MAIL = True # If the username is an email address, it must match the user's email address.
-    CUSTOM_MIGRATION= os.environ.get('CUSTOM_MIGRATION', 'False') # Set to 'True' by flask-migrate to indicate that a DB migration taking place.
+    CUSTOM_MIGRATION = os.environ.get('CUSTOM_MIGRATION', 'False') # Set to 'True' by flask-migrate to indicate that a DB migration is taking place.
     CUSTOM_BASE_URL = AppUtils.get_base_url()
     
 
@@ -125,11 +125,15 @@ class _ProdConfig(BaseConfig):
 class Config():
     """ Configuration class """
 
+    _config_object: BaseConfig
+
     @classmethod
     def get_config_object(cls) -> BaseConfig:
         """ Returns the config object """
+        
+        cls._config_object = _DevConfig() if cls.is_development() else _ProdConfig()
 
-        return _DevConfig() if cls.is_development() else _ProdConfig()
+        return cls._config_object
 
 
     @classmethod
@@ -150,4 +154,11 @@ class Config():
         """ returns True if this is a production environment """
 
         return not cls.is_development()
+    
+
+    @classmethod
+    def is_migration(cls) -> bool:
+        """ returns True if this is a migration environment """
+
+        return cls._config_object.CUSTOM_MIGRATION.lower() == 'true'
     

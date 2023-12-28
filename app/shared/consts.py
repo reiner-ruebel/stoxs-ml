@@ -6,12 +6,12 @@ class Consts:
     MIN_PASSWORD_LENGTH: int = 12
     MAX_PASSWORD_LENGTH: int = 32
 
-    BP_ROOT: str = "app/api" # Root folder of all blueprints.
-    ENDPOINTS: str = "endpoints" # The folder name where all endpoints are located inside a container (blueprint)
-    MIDDLEWARE: str = "app/core/middleware" # The name of the middleware module in a middleware directory.
+    BP_ROOT = "app/api" # Root folder of all blueprints.
+    ENDPOINTS = "endpoints" # The folder name where all endpoints are located inside a container (blueprint)
+    MIDDLEWARE = "app/core/middleware" # The name of the middleware module in a middleware directory.
     
     # The following constants are used for the database.
-    DB_PRE_REGISTER: str = "pre_register"
+    DB_PRE_REGISTER = "pre_register"
     
     # Texts used in the application.
     ERROR = "error"
@@ -20,3 +20,12 @@ class Consts:
     
     SWAGGER_MODEL = "SwaggerModel"
     RESPONSE_MODEL = "ResponseModel"
+    
+    # Extensions to avoid spelling errors.
+    EXTENSION_SECURITY = "security"
+    EXTENSION_SQLALCHEMY = "sqlalchemy"
+    EXTENSION_MIGRATE = "migrate"
+    EXTENSION_MARSHMALLOW = "marshmallow"
+    EXTENSION_FLASK_ADMIN = "flask_admin"
+    EXTENSION_MAIL = "mail"
+    EXTENSION_JWT = "jwt"

@@ -1,34 +1,29 @@
-"""
-Flask and other extensions instantiated here.
-
-To avoid circular imports with blueprints and create_app(), extensions are instantiated here. They will be initialized
-(calling init_app()) in application.py.
-"""
-
-from typing import Callable
-
-from flask import Flask
 from flask_migrate import Migrate
 from flask_security import Security
 from flask_mailman import Mail # type: ignore
 from flask_jwt_extended import JWTManager
+from flask_sqlalchemy import SQLAlchemy
 
-from app.core.application.database import AppSql
+from app.shared.consts import Consts
+from app.shared.AppTypes import Extension
 from app.core.security import user_datastore
 
-Extension = tuple[object, Callable[[Flask], None], dict[str, object]]
 
 class Extensions:
-    _migrate = Migrate()
-    _security = Security()
-    _mail = Mail()
-    _jwt = JWTManager()
+    """Extensions to be initialized in the Flask application."""
 
-    @classmethod
-    def get_extensions(cls) -> list[Extension]:
+    @staticmethod
+    def get_extensions(db: SQLAlchemy) -> list[Extension]:
+        """Returns a list of extensions to be initialized."""
+        
+        migrate = Migrate()
+        security = Security()
+        mail = Mail()
+        jwt = JWTManager()
+
         return [
-            (cls._migrate, cls._migrate.init_app, {'db': AppSql.db}),
-            (cls._security, cls._security.init_app, {'datastore': user_datastore}),
-            (cls._mail, cls._mail.init_app, {}),
-            (cls._jwt, cls._jwt.init_app, {}),
+            (Consts.EXTENSION_MIGRATE, migrate, migrate.init_app, {'db': db}),
+            (Consts.EXTENSION_SECURITY, security, security.init_app, {'datastore': user_datastore}),
+            (Consts.EXTENSION_MAIL, mail, mail.init_app, {}),
+            (Consts.EXTENSION_JWT, jwt, jwt.init_app, {}),
         ]

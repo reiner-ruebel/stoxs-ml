@@ -5,13 +5,12 @@ from functools import wraps
 from marshmallow import ValidationError
 from flask import Response, request, Request
 
+from app.shared.AppTypes import Api_Response
 from app.shared.utils import AppUtils
 from app.shared.consts import Consts
 from app.shared.http_status_codes import HttpStatusCodes, is_success
 from app.api.shared.errors import error_map
 
-
-Api_Response = Union[dict, Response, tuple[Union[dict, Response], int]]
 
 class ApiUtils:
     """A class that provides access to the APIs of the application."""

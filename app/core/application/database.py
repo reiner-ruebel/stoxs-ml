@@ -3,15 +3,13 @@ from flask_security.models import fsqla_v3 as fsqla
 
 
 class AppSql:
-    """A class that provides access to the database of the application."""
+    """Database component for the Flask application."""
     
-    db: SQLAlchemy
-
-    @classmethod
-    def create_db(cls) -> SQLAlchemy:
+    @staticmethod
+    def create_db() -> SQLAlchemy:
         """Creates the database"""
 
-        cls.db = SQLAlchemy()
-        fsqla.FsModels.set_db_info(cls.db)
-        return cls.db
+        db = SQLAlchemy()
+        fsqla.FsModels.set_db_info(db)
+        return db
    

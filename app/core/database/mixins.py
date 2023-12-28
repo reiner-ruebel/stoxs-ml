@@ -1,35 +1,36 @@
-from typing import TypeVar, Generic, Optional, Callable, Any, cast
+import typing as t
 from functools import wraps
 
 from sqlalchemy.exc import SQLAlchemyError
 
-
-from app.core.application.database import AppSql
-
-T = TypeVar('T', bound='AppSql.db.Model') # type: ignore
-F = TypeVar('F', bound=Callable[..., Any])  # Generic type for functions
+from app.core.application.app_components import AppComponents as C
 
 
-class CrudMixin(Generic[T]):
+# Developer note: Could not get mypy to recognize the bound part of the type variable, so I had to use type: ignore.
+T = t.TypeVar('T', bound='AppSql.db.Model')  # type: ignore
+F = t.TypeVar('F', bound=t.Callable[..., t.Any])   # Generic type for functions
+
+
+class CrudMixin(t.Generic[T]):
     """Mixin that adds convenience methods for CRUD (create, read, update, delete) operations."""
     
     @staticmethod
     def _db_commit_decorator(func: F) -> F:
         @wraps(func)
-        def wrapper(*args: Any, **kwargs: Any) -> Any:
+        def wrapper(*args: t.Any, **kwargs: t.Any) -> t.Any:
             try:
                 result = func(*args, **kwargs)
                 return result
             except SQLAlchemyError as e:
-                AppSql.db.session.rollback()
+                C.db.session.rollback()
                 raise
 
-        return cast(F, wrapper)  # Cast to maintain the return type
+        return t.cast(F, wrapper)  # Cast to maintain the return type
 
 
     @classmethod
-    def get_by_id(cls: type[T], id: int) -> Optional[T]:
-        return AppSql.db.session.query(cls).get(id)
+    def get_by_id(cls: type[T], id: int) -> t.Optional[T]:
+        return C.db.session.query(cls).get(id)
 
 
     @classmethod
@@ -49,14 +50,14 @@ class CrudMixin(Generic[T]):
 
     @_db_commit_decorator
     def save(self: T, commit: bool=True) -> T:
-        AppSql.db.session.add(self)
+        C.db.session.add(self)
         if commit:
-            AppSql.db.session.commit()
+            C.db.session.commit()
         return self
 
 
     @_db_commit_decorator
     def delete(self, commit: bool=True) -> None:
-        AppSql.db.session.delete(self)
+        C.db.session.delete(self)
         if commit:
-            AppSql.db.session.commit()
+            C.db.session.commit()

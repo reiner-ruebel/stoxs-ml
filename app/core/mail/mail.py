@@ -5,12 +5,13 @@ from jinja2 import Environment, FileSystemLoader
 from html2text import HTML2Text
 
 
-class Mail:
+class AppMail:
     @staticmethod
     def render_template(template_name: str, **kwargs) -> tuple[str, str]:
         """
         Returns the rendered content of a mail template as html and text.
-        The template name has no extension or location. Example: "welcome"
+
+                The template name has no extension or location. Example: "welcome"
         Intended for use with mailman.EmailMultiAlternatives()
         """
 
@@ -27,5 +28,6 @@ class Mail:
 
     @staticmethod
     def valid_email_address(email_address: str) -> bool:
-        """ Checks if an email address is valid. """
+        """Checks if an email address is valid."""
+
         return True if re.match(r"[^@]+@[^@]+\.[^@]+", email_address) else False
