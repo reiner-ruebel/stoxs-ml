@@ -7,9 +7,9 @@ from flask_security.core import Security
 from flask_security.datastore import UserDatastore
 
 from app.shared.consts import Consts
-from app.core.application.config import Config, config_object
+from app.core.application.config import config_object, is_development, is_migration
 from app.core.application.database import db
-from app.core.application.app_components import AppComponents as C
+from app.core.application.extensions import get_extension
 from app.core.security.roles import roles
 from app.api.auth.models.pre_register import PreRegisterModel
 
@@ -19,13 +19,13 @@ Base = declarative_base()
 class DbSeeder:
     """Class for seeding the database with predefined data."""
 
-    _security: Security = cast(Security, C.get_extension(Consts.EXTENSION_SECURITY))
+    _security: Security = cast(Security, get_extension(Consts.EXTENSION_SECURITY))
 
     @classmethod
     def reset(cls) -> None:
         """ Resets the DB. The user datastore and the pre-register are truncated. Then the DB is seeded again. """
 
-        if not Config.is_development():
+        if not is_development():
             raise RuntimeError("Reset operation is not allowed in this environment")
         
         if not cls._userstore_available():
@@ -75,7 +75,7 @@ class DbSeeder:
     def seed_needed(cls) -> bool:
         """Check if the 'user' and 'pre_register' tables exist and make sure that no migration is taking place."""
         
-        if Config.is_migration():
+        if is_migration():
             return False
 
         # If we do not have any tables yet, we do not need to seed any data. In fact, we would not be able to do this.

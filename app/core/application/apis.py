@@ -10,7 +10,7 @@ from app.shared.utils import AppUtils
 from app.core.shared.utils import CoreUtils
 from app.api.shared.documentation import ApiStrings
 from app.api.shared.utils import ApiUtils
-from app.core.application.blueprints import Blueprints
+from app.core.application.blueprints import get_blueprint
 
 
 class Apis:
@@ -72,7 +72,7 @@ class Apis:
         Creates an API object out of a container (directory which represents an API).
         The arguments for the API object are taken from the container module or set to defaults if they are not present.
         """
-        bp: Blueprint = Blueprints.get_blueprint(container)
+        bp: Blueprint = get_blueprint(container)
         api_module = import_module(ApiUtils.module_import_name(container))
 
         # Default values for API configuration

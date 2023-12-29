@@ -3,7 +3,6 @@ from typing import Optional
 from flask_security import password_complexity_validator
 
 from app.core.application.config import config_object
-from app.core.application.app_components import AppComponents as C
 from app.core.security.user import User
 from app.core.mail.mail import AppMail
 

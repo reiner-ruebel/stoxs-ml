@@ -11,7 +11,7 @@ from flask_restx import Resource, marshal_with # type: ignore
 from app.shared.consts import Consts
 from app.shared.AppTypes import Api_Response
 from app.core.application.config import config_object
-from app.core.application.app_components import AppComponents as C
+from app.core.application.extensions import get_extension
 from app.core.security.security_service import SecurityService
 from app.core.security.user import User
 from app.core.mail.mail import AppMail
@@ -32,7 +32,7 @@ class Register(Resource):
     def post(self, payload: PayloadModel) -> Api_Response:
         """ Registers a new user. """
 
-        security: Security = cast(Security, C.get_extension(Consts.EXTENSION_SECURITY))
+        security: Security = cast(Security, get_extension(Consts.EXTENSION_SECURITY))
 
         try:
             if not PreRegisterModel.query.get(payload.email):
