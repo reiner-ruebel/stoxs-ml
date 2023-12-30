@@ -152,20 +152,26 @@ class Config:
 
     @classmethod
     def _get_config_object(cls) -> BaseConfig:
-        """ Returns the current configuration object. """
+        """Returns the current configuration object."""
 
         return DevConfig() if cls.is_development() else ProdConfig()
     
 
     @staticmethod
     def create_container_config() -> dict[str, dict[str, Any]]:
+        """
+        Creates a dictionary with all the config values for the app and the extensions.
+        
+        Example of how to access an entry for JWT_REFRESH_TOKEN_EXPIRES -> config.jwt.refresh_token_expires
+        """
+
         classes = [_CustomConfig, _SecurityConfig, _MailConfig, _SqlalchemyConfig, _JwtConfig, _RestxConfig]
     
         config = {}
 
         for qlass in classes:
             class_name = qlass.__name__.lstrip('_').rstrip('Config').lower()  # Remove '_' prefix and 'Config' suffix ('_MailConfig' => 'mail')
-            class_prefix = class_name + '_'  # Convert class name to uppercase and add underscore ('mail_')
+            class_prefix = class_name + '_'  # 'mail_'
     
             attrs = {}
             for attr in dir(qlass):

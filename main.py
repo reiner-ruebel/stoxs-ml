@@ -1,2 +1,5 @@
+from app.web import WebApp
+
 if __name__ == '__main__':
-    import app
+    app = WebApp()
+    app.run()
