@@ -1,0 +1,12 @@
+## Organization
+When organizing a Flask-based web application, there are two main strategies for handling configurations: centralized or decentralized.
+
+In the centralized approach, all configurations (like database settings, API keys, core functionalities such as mailing services) are grouped in a single place, such as a config.py or config.ini file. This strategy simplifies general configuration management but can make specific topic-focused work less intuitive.
+
+Alternatively, the decentralized approach involves keeping related configurations near their respective functional areas, like having a distinct config.py for the database module. While this method can make working on specific areas more straightforward, it may lead to scattered configuration management.
+
+The chosen structure should complement the application's overall architecture and the developer's workflow preferences.
+
+For instance, an app divided into web, api, core, and shared modules might benefit from a consistent configuration approach across these subfolders to maintain clarity and organization. This is how the stoxs-ml application is organized.
+
+Secret configurations like passwords for services or the location of the database are in one location, while other configurations are in the respective module's config.py file.

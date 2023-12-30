@@ -5,9 +5,10 @@ from flask import Flask
 from app.core.application.config import config_object
 from app.core.application.blueprints import blueprints
 from app.core.application.database import db
-from app.core.application.extensions import extensions
+import extensions
 from app.core.application.middleware import middleware_modules
 from app.core.application.error_handlers import error_handlers
+
 
 
 def create_app() -> Flask:

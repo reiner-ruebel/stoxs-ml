@@ -29,6 +29,7 @@ class AppUtils:
         """
 
         cls._application_path = Path(file).parent
+        print(f"Application path set to {cls._application_path}")
 
 
     @classmethod
@@ -37,6 +38,7 @@ class AppUtils:
 
         if cls._application_path is None:
             raise ValueError("Application path has not been set.")
+
         return cls._application_path
 
 

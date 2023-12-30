@@ -1,4 +1,4 @@
-from app.core.extensions.extensions_v1 import extensions
+from .extensions_v1 import extensions
 
 def get_extension(extension_name: str) -> object:
     """Returns an extension by its name."""

@@ -20,4 +20,3 @@ extensions: list[Extension] = [
     (Consts.EXTENSION_MAIL, _mail, _mail.init_app, {}),
     (Consts.EXTENSION_JWT, _jwt, _jwt.init_app, {}),
 ]
-

@@ -1,13 +1,17 @@
 import typing as t
 from functools import wraps
 
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import SQLAlchemyError
+from dependency_injector.wiring import inject, Provide
+from sqlalchemy.orm import DeclarativeBase
 
-from app.core.application.database import db
+from app.core.application.containers import Container
 
 
-# Developer note: Could not get mypy to recognize the bound part of the type variable, so I had to use type: ignore.
-T = t.TypeVar('T', bound='AppSql.db.Model')  # type: ignore
+Base = DeclarativeBase()  # type: ignore
+
+T = t.TypeVar('T', bound='Base')  # type: ignore
 F = t.TypeVar('F', bound=t.Callable[..., t.Any])   # Generic type for functions
 
 
@@ -15,7 +19,8 @@ class CrudMixin(t.Generic[T]):
     """Mixin that adds convenience methods for CRUD (create, read, update, delete) operations."""
     
     @staticmethod
-    def _db_commit_decorator(func: F) -> F:
+    @inject
+    def _db_commit_decorator(func: F, db: SQLAlchemy = Provide[Container.db]) -> F:
         @wraps(func)
         def wrapper(*args: t.Any, **kwargs: t.Any) -> t.Any:
             try:
@@ -29,7 +34,8 @@ class CrudMixin(t.Generic[T]):
 
 
     @classmethod
-    def get_by_id(cls: type[T], id: int) -> t.Optional[T]:
+    @inject
+    def get_by_id(cls: type[T], id: int, db: SQLAlchemy = Provide[Container.db]) -> t.Optional[T]:
         return db.session.query(cls).get(id)
 
 
