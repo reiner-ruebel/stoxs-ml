@@ -22,7 +22,7 @@ class _CustomConfig:
     CUSTOM_REQUIRE_UPPERCASE = True
     CUSTOM_REQUIRE_LOWERCASE = True
     CUSTOM_REQUIRE_DIGITS = True
-    CUSTOM_SPECIAL_CHARS: Optional[str] = r'!@#%^&*()_+{}:"<>?[]\;\',./|`~'
+    CUSTOM_SPECIAL_CHARS: Optional[str] = '!"#%&\'()*+,-./:;<=>?@[\\]^_`{|}~' # '$' is intentially missing.
 
     # Seed Database
     CUSTOM_DB_TYPE = os.environ.get('CUSTOM_DB_TYPE', 'sqlite') # 'sqlite' (default), 'postgres', 'mysql', 'mssql'
@@ -105,14 +105,14 @@ class BaseConfig(_CustomConfig, _SecurityConfig, _MailConfig, _SqlalchemyConfig,
 # Development and Production Configurations
 #
 
-class DevConfig(BaseConfig):
+class _DevConfig(BaseConfig):
     """ Development setup """
 
     DEBUG = True
     SECRET_KEY = os.environ.get('SECRET_DEV_KEY', 'dev secret key')
 
 
-class ProdConfig(BaseConfig):
+class _ProdConfig(BaseConfig):
     """ Production setup """
 
     SECRET_KEY = os.environ.get('SECRET_PROD_KEY', 'prod secret key')
@@ -120,6 +120,7 @@ class ProdConfig(BaseConfig):
 
 
 class Config:
+    """ Configuration settings for the app and the extensions. """
 
     @classmethod
     def is_development(cls) -> bool:
@@ -152,7 +153,7 @@ class Config:
     def _get_config_object(cls) -> BaseConfig:
         """Returns the current configuration object."""
 
-        return DevConfig() if cls.is_development() else ProdConfig()
+        return _DevConfig() if cls.is_development() else _ProdConfig()
     
 
     @staticmethod
@@ -163,7 +164,7 @@ class Config:
         Example of how to access an entry for JWT_REFRESH_TOKEN_EXPIRES -> config.jwt.refresh_token_expires
         """
 
-        classes = [_CustomConfig, _SecurityConfig, _MailConfig, _SqlalchemyConfig, _JwtConfig, _RestxConfig]
+        classes = list(BaseConfig.__bases__)
     
         config: dict[str, dict[str, Any]] = {}
 

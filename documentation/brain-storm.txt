@@ -10,3 +10,6 @@ The chosen structure should complement the application's overall architecture an
 For instance, an app divided into web, api, core, and shared modules might benefit from a consistent configuration approach across these subfolders to maintain clarity and organization. This is how the stoxs-ml application is organized.
 
 Secret configurations like passwords for services or the location of the database are in one location, while other configurations are in the respective module's config.py file.
+
+## Passowrd test
+$ is not allowed, backslash is allowed.
