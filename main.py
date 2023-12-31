@@ -1,5 +1,5 @@
 from app.web import WebApp
 
-if __name__ == '__main__':
-    app = WebApp()
-    app.run()
+web_app = WebApp()  # create the web app
+app = web_app.create_app()  # create the flask app
+app.run()

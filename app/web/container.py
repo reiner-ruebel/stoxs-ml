@@ -6,7 +6,7 @@ from .config import Config
 
 class Container(containers.DeclarativeContainer):
     """
-    Application container.
+    Web Application container.
     
     Creates the flask app and the config object.
     The config object contains all the config values for the app and the extensions.

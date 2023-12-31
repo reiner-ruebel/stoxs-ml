@@ -1,10 +1,8 @@
-from typing import Optional, Any, Type
+from typing import Optional, Any
 import os
 from datetime import timedelta
 
 from dotenv import load_dotenv
-
-from app.shared.utils import AppUtils
 
 
 # One way of setting the environment variables is to create a .flaskenv file in the root directory of the project.
@@ -24,7 +22,7 @@ class _CustomConfig:
     CUSTOM_REQUIRE_UPPERCASE = True
     CUSTOM_REQUIRE_LOWERCASE = True
     CUSTOM_REQUIRE_DIGITS = True
-    CUSTOM_SPECIAL_CHARS: Optional[str] = '!@#%^&*()_+{}:"<>?[]\;\',./|`~'
+    CUSTOM_SPECIAL_CHARS: Optional[str] = r'!@#%^&*()_+{}:"<>?[]\;\',./|`~'
 
     # Seed Database
     CUSTOM_DB_TYPE = os.environ.get('CUSTOM_DB_TYPE', 'sqlite') # 'sqlite' (default), 'postgres', 'mysql', 'mssql'
@@ -35,7 +33,7 @@ class _CustomConfig:
     # Other
     CUSTOM_USERNAME_NOT_DIFFERENT_FROM_MAIL = True # If the username is an email address, it must match the user's email address.
     CUSTOM_MIGRATION = os.environ.get('CUSTOM_MIGRATION', 'False') # Set to 'True' by flask-migrate to indicate that a DB migration is taking place.
-    CUSTOM_BASE_URL = AppUtils.get_base_url()
+    CUSTOM_BASE_URL = os.environ.get('CUSTOM_BASE_URL', 'http://localhost:5000')
     CUSTOM_FLASK_NAME = os.environ.get('APP_NAME', 'app')
     
 
@@ -167,7 +165,7 @@ class Config:
 
         classes = [_CustomConfig, _SecurityConfig, _MailConfig, _SqlalchemyConfig, _JwtConfig, _RestxConfig]
     
-        config = {}
+        config: dict[str, dict[str, Any]] = {}
 
         for qlass in classes:
             class_name = qlass.__name__.lstrip('_').rstrip('Config').lower()  # Remove '_' prefix and 'Config' suffix ('_MailConfig' => 'mail')
