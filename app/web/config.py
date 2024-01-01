@@ -35,6 +35,7 @@ class _CustomConfig:
     CUSTOM_MIGRATION = os.environ.get('CUSTOM_MIGRATION', 'False') # Set to 'True' by flask-migrate to indicate that a DB migration is taking place.
     CUSTOM_BASE_URL = os.environ.get('CUSTOM_BASE_URL', 'http://localhost:5000')
     CUSTOM_FLASK_NAME = os.environ.get('APP_NAME', 'app')
+    CUSTOM_VERSION = 1
     
 
 class _SecurityConfig:
@@ -98,7 +99,6 @@ class BaseConfig(_CustomConfig, _SecurityConfig, _MailConfig, _SqlalchemyConfig,
     SITE_NAME = os.environ.get('APP_NAME', 'app')
     SECRET_KEY = 'not set in base'
     ENVIRONMENT = os.environ.get('FLASK_ENV', 'development')
-    DEBUG = False
 
 
 #
@@ -108,7 +108,6 @@ class BaseConfig(_CustomConfig, _SecurityConfig, _MailConfig, _SqlalchemyConfig,
 class _DevConfig(BaseConfig):
     """ Development setup """
 
-    DEBUG = True
     SECRET_KEY = os.environ.get('SECRET_DEV_KEY', 'dev secret key')
 
 

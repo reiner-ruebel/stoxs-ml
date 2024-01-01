@@ -13,3 +13,28 @@ Secret configurations like passwords for services or the location of the databas
 
 ## Passowrd test
 $ is not allowed, backslash is allowed.
+
+## models
+An HTTP request comes via post to a namespace class method: This is a payload model (example: register a user with username, password, firstname, ...)
+The method is decorated with ns.expect(swagger_model) for documentation.
+The method is decorated with ns.marshal_with(response_model) to send back to the client.
+The data are stored in the database via a model class method: This is a database model (example: User with username, password, firstname, ...)
+
+Payload data are validated using marshmallow. The marshmallow schema is defined in the payload model class. The marshmallow schema is used in the database model class to validate the data before storing them in the database.
+
+The application is organized as app => (api) => blueprints => namespaces (endpoints) => methods.
+
+The namespaces are defined in the api blueprint. The methods are defined in the namespaces. The models are defined in the methods.
+
+The blueprints are located in the web folder. 
+
+## Utils
+The app utils should not depend on anything within the app.
+
+
+## Controllers
+With dependency injection I follow the ASP.NET pattern (which I have seen for Python too): We have an interface like IAccountService (contains methods like register()). Then, there is (or there are multiple) impelmentations AccountTestService(IAccountService), AccountService(IAccountService) etc. There is provider in a Service class which derives from containers.DeclarativeContainer. flask-restx provides the service to define classes which get the (e.g. post) the request data to a post method. Together with the __init__ and a marshmallow validation / serialization a var of type RegisterPayload gets crated and the account_service's register method can be called with this payload. Now, the account_service will have some methods like register, change_password, .... but I can only serve one of these methods with a Resource class. I trust that the process is clear and I am lookig for naming conventions. In ASP.NET this is called controller. But the controller can have multiple post entries. What could a naming schema look like for such a scenario? 
+
+
+## Ducumentation
+core is responsible for documentation. Documentation is centralized in the web folder/shared

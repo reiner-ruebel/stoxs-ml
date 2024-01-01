@@ -1,19 +1,13 @@
+from dependency_injector.wiring import inject, Provide
 from flask import Flask
 
 from .container import Container
+from .config import Config
 
+@inject
+def create_app(app: Flask = Provide[Container.flask_app]) -> Flask:
+    return app
 
-class WebApp:
-    """
-    The WebApp class is the entry point for the web application.
+Container().wire(modules=[__name__])
 
-    It creates the container and runs the app.
-    """
-
-    def __init__(self) -> None:
-        self._container = Container()
-
-
-    def create_app(self) -> Flask:
-        app: Flask = self._container.create_app()
-        return app
+__all__ = ['create_app', 'Config']
