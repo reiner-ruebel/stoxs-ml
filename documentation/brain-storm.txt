@@ -22,11 +22,13 @@ The data are stored in the database via a model class method: This is a database
 
 Payload data are validated using marshmallow. The marshmallow schema is defined in the payload model class. The marshmallow schema is used in the database model class to validate the data before storing them in the database.
 
-The application is organized as app => (api) => blueprints => namespaces (endpoints) => methods.
+The application is organized as in web.namespaces. Each module which contains a namespace will be registered.
 
-The namespaces are defined in the api blueprint. The methods are defined in the namespaces. The models are defined in the methods.
+There are payload models and response models. The payload models are used to validate the data which are sent to the server. The response models are used to validate the data which are sent back to the client.
 
-The blueprints are located in the web folder. 
+There are Swagger models which will be created from the payload models. The Swagger models are used to document the API. The strings are in the swagger docu class.
+
+DB models are in core.
 
 ## Utils
 The app utils should not depend on anything within the app.
@@ -36,5 +38,9 @@ The app utils should not depend on anything within the app.
 With dependency injection I follow the ASP.NET pattern (which I have seen for Python too): We have an interface like IAccountService (contains methods like register()). Then, there is (or there are multiple) impelmentations AccountTestService(IAccountService), AccountService(IAccountService) etc. There is provider in a Service class which derives from containers.DeclarativeContainer. flask-restx provides the service to define classes which get the (e.g. post) the request data to a post method. Together with the __init__ and a marshmallow validation / serialization a var of type RegisterPayload gets crated and the account_service's register method can be called with this payload. Now, the account_service will have some methods like register, change_password, .... but I can only serve one of these methods with a Resource class. I trust that the process is clear and I am lookig for naming conventions. In ASP.NET this is called controller. But the controller can have multiple post entries. What could a naming schema look like for such a scenario? 
 
 
-## Ducumentation
+## Documentation
 core is responsible for documentation. Documentation is centralized in the web folder/shared
+Data are centralized: easier to check / adjust documentation consistency, check spelling and the option for translation.
+
+## Versions
+Test different versions using namespaces. https://flask-restx.readthedocs.io/en/latest/scaling.html

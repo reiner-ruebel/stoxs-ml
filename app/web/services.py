@@ -1,7 +1,7 @@
 from dependency_injector import containers, providers
 
-from app.api.account.account_service import AccountService
-from app.api.account.account_mock_service import AccountMockService
+from app.services import IAccountService
+from app.services import AccountMockService
 
 class Services(containers.DeclarativeContainer):
     """
@@ -9,5 +9,5 @@ class Services(containers.DeclarativeContainer):
     """
     
     account_mock_service = providers.Factory(AccountMockService)
-    account_service = providers.Factory(AccountService, account_service=account_mock_service)
+    account_service = providers.Factory(IAccountService, account_service=account_mock_service)
     
