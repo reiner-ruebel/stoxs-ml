@@ -1,4 +1,4 @@
-from typing import Any, Callable, TypeVar, Union
+from typing import Any, Callable, Optional, Type, TypeVar, Union
 
 from flask import Flask, Response
 
@@ -17,3 +17,6 @@ ApiResponse = Union[
     Response,
     tuple[Union[_ResponseDict, Response], int]
     ]
+
+
+NamespaceResponse = dict[int, tuple[str, Optional[Type[Any]]]]

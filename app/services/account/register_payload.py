@@ -23,8 +23,3 @@ class RegisterPayload:
     def create_schema(self) -> type[Schema]:
         """ Creates a marshmallow schema for this dataclass. """
         return class_schema(RegisterPayload)
-
-
-
-# ???????
-RegisterSchema = class_schema(RegisterPayload)

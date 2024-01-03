@@ -1,5 +1,7 @@
 from dependency_injector import containers, providers
 
+from app.services.service_base import ServiceBase
+
 from .account.iaccount_service import IAccountService
 from .account.account_service import AccountService
 from .account.account_mock_service import AccountMockService
@@ -14,8 +16,10 @@ class Services(containers.DeclarativeContainer):
     # for later
     #   a) create all services, if they exist (or better: create a service factory)
     #   b) get the effective service from the config
+
+    provided_type = ServiceBase  # https://python-dependency-injector.ets-labs.org/providers/factory.html#specializing-the-provided-type
     
     account_mock_service = providers.Factory(AccountMockService)
     account_service = providers.Factory(AccountService, account_service=account_mock_service)
-
+    
 __all__ = ['IAccountService', 'RegisterPayload', 'Services', 'RegisterResult']
