@@ -5,8 +5,8 @@ from .register_result import RegisterResult
 class AccountMockService(IAccountService):
     def register(self, payload: RegisterPayload) -> RegisterResult:
         if payload.firstname != "Hugo":
-            result = RegisterResult(True, "User registered successfully")
+            result = RegisterResult.yes()
         else:
-            result = RegisterResult(False, "User already exists")
+            result = RegisterResult.no()
 
         return result

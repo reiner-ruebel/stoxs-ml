@@ -75,9 +75,9 @@ class Utils:
                     if request_data is None:
                         return cls.create_api_response("No_data_provided", HttpStatusCodes.HTTP_400_BAD_REQUEST)
 
-                    schema = class_schema(payload_class)
-                    model: Any = schema.load(request_data)  # type: ignore
-                    return func(*args, **kwargs, model=model)
+                    schema = class_schema(payload_class)()
+                    payload: Any = schema.load(request_data)
+                    return func(*args, **kwargs, payload=payload)
                 except ValidationError as err:
                     return cls.create_api_response(err.messages, ok = False)  # type: ignore
             return cast(F, wrapper)

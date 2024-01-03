@@ -1,6 +1,7 @@
 from typing import Optional
 from dataclasses import dataclass
 
+from marshmallow import Schema
 from marshmallow_dataclass import class_schema
 
 from app.core import SwaggerFields
@@ -17,5 +18,13 @@ class RegisterPayload:
     username: Optional[str] = SwaggerFields.USERNAME
     middlename: Optional[str] = SwaggerFields.MIDDLENAME
     title: Optional[str] = SwaggerFields.TITLE
-    
+
+
+    def create_schema(self) -> type[Schema]:
+        """ Creates a marshmallow schema for this dataclass. """
+        return class_schema(RegisterPayload)
+
+
+
+# ???????
 RegisterSchema = class_schema(RegisterPayload)

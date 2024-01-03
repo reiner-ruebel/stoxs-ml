@@ -87,6 +87,7 @@ class _RestxConfig:
 
     RESTX_ERROR_404_HELP = 'false'
     RESTX_INCLUDE_ALL_MODELS = True
+    RESTX_VALIDATE = False  # Disable restx validation to allow for custom validation in the WebUtils.validate_request decorator.
 
 
 #

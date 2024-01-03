@@ -1,5 +1,6 @@
 class RegisterResult:
-    def __init__(self, success: bool, message: str):
-        self.success = success
-        self.message = message
+    def yes():
+        return {'success': True, 'message': "yes"}
+    def no():
+        return {'success': False, 'message': "no"}
         
