@@ -1,0 +1,2 @@
+class INamespaceManager:
+    pass

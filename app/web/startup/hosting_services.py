@@ -1,16 +1,14 @@
 from dependency_injector import containers, providers
 from flask import Flask
-from flask_restx import Api  # type: ignore
 
 from .config import Config
-from app.core import CoreUtils, Strings
 
 
-class Container(containers.DeclarativeContainer):
+class HostingServices(containers.DeclarativeContainer):
     """
     Web Application container.
     
-    Creates the flask app and the config object.
+    Creates the web app and the config object.
     The config object contains all the config values for the app and the extensions.
 
     Example of how to access an entry for mail: mail_server = container.config.mail.server
@@ -29,25 +27,12 @@ class Container(containers.DeclarativeContainer):
     except:
         pass
     
-    # flask app
-    flask_app = providers.Singleton(
+    # host (flask app is currently the only option)
+    host = providers.Singleton(
         Flask,
         flask_name,
         instance_relative_config=True,  # *)
     )
     
-    version = config.custom.version
-    if not isinstance(version, int):
-        version = 1
-    
-    # API
-    flask_api = providers.Singleton(
-        Api,
-        flask_app,
-        title=Strings.TITLE,
-        version=CoreUtils.create_version(version),
-        description=Strings.DESCRIPTION,
-        )
-
 
 # *) if set to True relative filenames for loading the config are assumed to be relative to the instance path instead of the application root.

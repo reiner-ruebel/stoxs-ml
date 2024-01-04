@@ -3,12 +3,13 @@ from dataclasses import is_dataclass, fields as get_fields
 
 from flask_restx import Namespace, Model as SwaggerModel, fields as restx_fields
 
+from .inamespace_manager import INamespaceManager
 from app import AppUtils, Consts
 from app.core import SwaggerStrings
 from .namespace_docu import NamespaceDocu
 
 
-class NamespaceManager:
+class NamespaceManager(INamespaceManager):
     """Namespace manager."""
     
     def __init__(self, module_name: str, payload_model: Optional[Type[Any]] = None, codes: Optional[list[int]] = None) -> None:

@@ -5,6 +5,15 @@ from dependency_injector.wiring import inject, Provide
 from app.services import IAccountService, RegisterPayload, RegisterResult, Services
 from app.web import WebUtils, NamespaceFactory, NamespaceDocu
 
+class AccountController:
+    @inject
+    def __init__(self,
+                 account_service: IAccountService = Provide[Services.account_service]
+                 namespace_manager: NamespaceFactory = Provide[WebUtils.namespace_manager]
+                 ) -> None:
+        self._account_service = account_service
+
+
 @inject
 def get_service(account_service: IAccountService = Provide[Services.account_service]) -> IAccountService:
     return account_service
