@@ -58,3 +58,9 @@ core is the project with the library code, like mail, file handling, etc. Indepe
 
 ## Access
 If we access modules, we should as a rule access only what is available in the containing package. If we access module in the same package, we should use relative imports.
+
+## Documentation of the creation of the test controller
+In the app/services folder we create a /test folder
+In the test folder we create a test_service.py file and a itest_service.py interface file
+The interface file contains the interface ITestService which contains the abstract methods which will be implemented in the test_service.py file
+In the test_service.py file we create a class TestService which implements the ITestService interface

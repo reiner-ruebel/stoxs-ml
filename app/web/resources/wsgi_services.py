@@ -1,4 +1,4 @@
-from typing import Any, Optional, cast
+from typing import Any, Optional
 
 from dependency_injector import containers, providers
 
@@ -50,62 +50,62 @@ class WsgiServices(containers.DeclarativeContainer):
     )
     
 
-    # Database: https://flask-sqlalchemy.palletsprojects.com/en/latest/
+    # # Database: https://flask-sqlalchemy.palletsprojects.com/en/latest/
 
-    db = providers.Singleton(
-        SQLAlchemy,
-        app
-        )
+    # db = providers.Singleton(
+    #     SQLAlchemy,
+    #     app
+    #     )
 
 
-    # Babel: https://python-babel.github.io/flask-babel/
+    # # Babel: https://python-babel.github.io/flask-babel/
 
-    def _get_locale(self) -> Optional[str]:
-        # if a user is logged in, use the locale from the user settings
-        user = getattr(g, 'user', None)
-        if user is not None:
-            return user.locale
-        # otherwise try to guess the language from the user accept
-        # header the browser transmits.  We support de/fr/en in this
-        # example.  The best match wins.
-        return request.accept_languages.best_match(['de', 'fr', 'en'])
+    # def _get_locale(self) -> Optional[str]:
+    #     # if a user is logged in, use the locale from the user settings
+    #     user = getattr(g, 'user', None)
+    #     if user is not None:
+    #         return user.locale
+    #     # otherwise try to guess the language from the user accept
+    #     # header the browser transmits.  We support de/fr/en in this
+    #     # example.  The best match wins.
+    #     return request.accept_languages.best_match(['de', 'fr', 'en'])
 
-    def _get_timezone(self) -> Any:
-        user = getattr(g, 'user', None)
-        if user is not None:
-            return user.timezone
+    # def _get_timezone(self) -> Any:
+    #     user = getattr(g, 'user', None)
+    #     if user is not None:
+    #         return user.timezone
         
-    babel = providers.Singleton(
-        Babel,
-        app,
-        locale_selector=_get_locale,
-        timezone_selector=_get_timezone,
-        )
+    # babel = providers.Singleton(
+    #     Babel,
+    #     app,
+    #     locale_selector=_get_locale,
+    #     timezone_selector=_get_timezone,
+    #     )
     
 
-    # Restx: https://flask-restx.readthedocs.io/en/latest/
+    # # Restx: https://flask-restx.readthedocs.io/en/latest/
 
-    api = providers.Singleton(
-        Api,
-        app = app,
-        version = config.api.version,
-        title = config.api.title,
-        description = config.api.description,
-        )
+    # api = providers.Singleton(
+    #     Api,
+    #     app = app,
+    #     version = config.custom.version,
+    #     title = "stoxs title",
+    #     description = "stoxs description",
+    #     )
     
 
-    # Mail: https://pythonhosted.org/Flask-Mail/
+    # # Mail: https://pythonhosted.org/Flask-Mail/
 
-    mail = providers.Singleton(
-        Mail,
-        app
-        )
+    # mail = providers.Singleton(
+    #     Mail,
+    #     app
+    #     )
     
 
-    # JWT: https://pythonhosted.org/Flask-JWT/
+    # # JWT: https://pythonhosted.org/Flask-JWT/
 
-    jwt = providers.Singleton(
-        JWTManager,
-        app
-        )
+    # jwt = providers.Singleton(
+    #     JWTManager,
+    #     app
+    #     )
 

@@ -1,3 +1,4 @@
+from importlib import import_module
 from typing import cast
 
 from dependency_injector.providers import Configuration
@@ -17,11 +18,12 @@ class Program:
                  config_object: BaseConfig = Provide[WsgiServices.config_object]
                  ) -> None:
 
-        """Create the flask app"""
+        """Create and init the flask app"""
         self._config = config
         self._app = app
         self._config_object = config_object
         self._app.config.from_object(self._config_object)
+        import_module('app.web.controllers.test')
         
 
     def run(self) -> None:
