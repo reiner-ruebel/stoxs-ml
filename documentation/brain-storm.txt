@@ -44,3 +44,17 @@ Data are centralized: easier to check / adjust documentation consistency, check 
 
 ## Versions
 Test different versions using namespaces. https://flask-restx.readthedocs.io/en/latest/scaling.html
+
+## hierary:
+We have a main.py file which is the starting point. The folders in app are thought of like projects with a certain hierachy.
+
+web contains all web (i.e. flask in out case) related functionaliry and also defines the startup project: it should not be accessed from the other projects except for the main.py file.
+
+The controllers in the controller folder are the entry points for the REST API. They are short and call the services.
+
+services are the app services which contain the business logic. They are accessed by the controllers and can access the core.
+
+core is the project with the library code, like mail, file handling, etc. Independent from the web project. It can be accessed by the other projects.
+
+## Access
+If we access modules, we should as a rule access only what is available in the containing package. If we access module in the same package, we should use relative imports.

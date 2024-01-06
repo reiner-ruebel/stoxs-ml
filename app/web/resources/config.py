@@ -90,11 +90,18 @@ class _RestxConfig:
     RESTX_VALIDATE = False  # Disable restx validation to allow for custom validation in the WebUtils.validate_request decorator.
 
 
+class _BabelConfig:
+    """ Babel settings """
+
+    BABEL_DEFAULT_LOCALE = 'en'
+    BABEL_DEFAULT_TIMEZONE = 'UTC'
+
+
 #
 # Base Configuration
 #
 
-class BaseConfig(_CustomConfig, _SecurityConfig, _MailConfig, _SqlalchemyConfig, _JwtConfig, _RestxConfig):
+class BaseConfig(_CustomConfig, _SecurityConfig, _MailConfig, _SqlalchemyConfig, _JwtConfig, _RestxConfig, _BabelConfig):
     """ Default configuration options. This should never be used! """
 
     SITE_NAME = os.environ.get('APP_NAME', 'app')
@@ -120,7 +127,12 @@ class _ProdConfig(BaseConfig):
 
 
 class Config:
-    """ Configuration settings for the app and the extensions. """
+    """Configuration settings for the app and the extensions.
+    
+    There are two versions of config:
+        - config_object which is an instance of the BaseConfig class to be used to configure the flask app.
+        - config_dict which is a dictionary with all the config values for the app and the extensions. This is used by the dependency injector.
+    """
 
     @classmethod
     def is_development(cls) -> bool:
@@ -146,18 +158,18 @@ class Config:
     def is_migration(cls) -> bool:
         """Returns True if this is a migration environment."""
 
-        return cls._get_config_object().CUSTOM_MIGRATION.lower() == 'true'
+        return cls.get_config_object().CUSTOM_MIGRATION.lower() == 'true'
 
 
     @classmethod
-    def _get_config_object(cls) -> BaseConfig:
+    def get_config_object(cls) -> BaseConfig:
         """Returns the current configuration object."""
 
         return _DevConfig() if cls.is_development() else _ProdConfig()
     
 
-    @staticmethod
-    def create_container_config() -> dict[str, dict[str, Any]]:
+    @classmethod
+    def create_container_config(cls) -> dict[str, dict[str, Any]]:
         """
         Creates a dictionary with all the config values for the app and the extensions.
         
@@ -165,6 +177,10 @@ class Config:
         """
 
         classes = list(BaseConfig.__bases__)
+        if cls.is_development():
+            classes.append(_DevConfig)
+        else:
+            classes.append(_ProdConfig)
     
         config: dict[str, dict[str, Any]] = {}
 
@@ -174,6 +190,8 @@ class Config:
     
             attrs = {}
             for attr in dir(qlass):
+                if attr.startswith('_'):
+                    continue
                 attr_key = attr.lower()
                 if attr_key.startswith(class_prefix):
                     attr_key = attr_key[len(class_prefix):]  # Remove class name prefix
