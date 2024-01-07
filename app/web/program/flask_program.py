@@ -1,3 +1,4 @@
+import os
 from importlib import import_module
 from typing import cast
 
@@ -6,6 +7,7 @@ from dependency_injector.wiring import Provide, inject
 from flask import Flask, request
 
 from .iprogram import IProgram
+from app import Consts
 from app.web.resources import BaseConfig, WsgiServices
 
 
@@ -23,11 +25,8 @@ class FlaskProgram(IProgram):
         self._config = config
         self._app = app
         self._config_object = config_object
-        self._app.config.from_object(self._config_object)
-        self._development = cast(bool, self._config['development'])
-    
-        if self._development:
-            self._app.add_url_rule(rule='/show', endpoint='show_my_routes', view_func=self._show_routes)
+        
+        self._setup()
 
         with self._app.app_context():
             import_module('app.web.controllers.test1')
@@ -47,6 +46,19 @@ class FlaskProgram(IProgram):
     #
     # private methods
     #
+
+    def _setup(self) -> None:
+        """Setup the application."""
+
+        self._app.config.from_object(self._config_object)
+        self._development = cast(bool, self._config['development'])
+            
+    def _create_rules(self):
+        """Create the routes of the application."""
+
+        if self._development:
+            self._app.add_url_rule(rule='/show', endpoint='show_my_routes', view_func=self._show_routes)
+
 
     def _shutdown_server(self) -> None:
         """
@@ -74,6 +86,19 @@ class FlaskProgram(IProgram):
             output.append(line)
 
         return '<br>'.join(output)
+    
+
+    @staticmethod
+    def _find_controllers() -> list[str]:
+        controllers: list[str] = []
+
+        for entry in os.listdir(Consts.CONTROLLER_ROOT):
+            full_path = os.path.join(Consts.CONTROLLER_ROOT, entry)
+            if os.path.isfile(full_path) and entry.endswith('.py'):
+                module_path = full_path.replace(os.path.sep, '.')
+                module, _ = os.path.splitext(module_path)
+
+        return controllers
 
 
 WsgiServices().wire([__name__])

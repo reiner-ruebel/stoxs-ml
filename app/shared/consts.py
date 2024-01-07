@@ -1,13 +1,12 @@
 class Consts:
     """ This class is used to store all constants of the application. """
 
-    MAX_NAME_LENGTH: int = 32
-    MAX_EMAIL_LENGTH: int = 64
-    MIN_PASSWORD_LENGTH: int = 12
-    MAX_PASSWORD_LENGTH: int = 32
+    MAX_NAME_LENGTH = 32
+    MAX_EMAIL_LENGTH = 64
+    MIN_PASSWORD_LENGTH = 12
+    MAX_PASSWORD_LENGTH = 32
 
-    BP_ROOT = "app/api"  # Root folder of all blueprints.
-    ENDPOINTS = "endpoints"  # The folder name where all endpoints are located inside a container (blueprint)
+    CONTROLLER_ROOT: str = "app/web/controllers"  # Root folder of all controllers.
     
     # The following constants are used for the database.
     DB_PRE_REGISTER = "pre_register"
@@ -28,4 +27,3 @@ class Consts:
     EXTENSION_FLASK_ADMIN = "flask_admin"
     EXTENSION_MAIL = "mail"
     EXTENSION_JWT = "jwt"
-

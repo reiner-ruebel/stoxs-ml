@@ -1,24 +1,30 @@
-from flask import Flask, current_app
-from flask_restx import Resource, Api
-from dependency_injector.wiring import inject, Provide
+from app.web.resources import BaseController
 
-from app.web.resources import WsgiServices
+class TestController(BaseController):
+    pass
 
-print('importing controller test')
+# 
+# from flask import Flask, current_app
+# from flask_restx import Resource, Api
+# from dependency_injector.wiring import inject, Provide
 
-@inject
-def get_app(app: Flask = Provide[WsgiServices.app]) -> Flask:
-    return app
+# from app.web.resources import WsgiServices
 
-WsgiServices().wire(modules=[__name__])
+# print('importing controller test')
 
-app = current_app
-# api = Api(app, title="my title")
-# print('api title', api.title)
+# @inject
+# def get_app(app: Flask = Provide[WsgiServices.app]) -> Flask:
+#     return app
 
-@app.route('/hello')
-def hello():
-    return {'hello': 'world'}
+# WsgiServices().wire(modules=[__name__])
+
+# app = current_app
+# # api = Api(app, title="my title")
+# # print('api title', api.title)
+
+# @app.route('/hello')
+# def hello():
+#     return {'hello': 'world'}
 
 # @api.route('/hello')
 # class HelloWorld(Resource):
