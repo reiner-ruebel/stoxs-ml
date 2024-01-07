@@ -5,11 +5,12 @@ from dependency_injector.providers import Configuration
 from dependency_injector.wiring import Provide, inject
 from flask import Flask, request
 
+from .iprogram import IProgram
 from app.web.resources import BaseConfig, WsgiServices
 
 
-class Program:
-    """The entry point of the application."""
+class FlaskProgram(IProgram):
+    """Implementation of the IProgram interface to init and run the app."""
 
     @inject
     def __init__(self,
@@ -17,20 +18,25 @@ class Program:
                  config: Configuration = Provide[WsgiServices.config],
                  config_object: BaseConfig = Provide[WsgiServices.config_object]
                  ) -> None:
-
         """Create and init the flask app"""
+
         self._config = config
         self._app = app
         self._config_object = config_object
         self._app.config.from_object(self._config_object)
-        import_module('app.web.controllers.test')
+        self._development = cast(bool, self._config['development'])
+    
+        if self._development:
+            self._app.add_url_rule(rule='/show', endpoint='show_my_routes', view_func=self._show_routes)
+
+        with self._app.app_context():
+            import_module('app.web.controllers.test1')
         
 
     def run(self) -> None:
         """Run the application."""
 
-        debug: bool = cast(bool, self._config['development'])
-        self._app.run(debug=debug)
+        self._app.run(debug=self._development)
 
 
     def stop(self):
@@ -53,6 +59,21 @@ class Program:
         if func is None:
             raise RuntimeError('Could not shutdown the server')
         func()
+
+
+    def _show_routes(self):
+        """Quick overview of the routes of the application (dev mode only)"""
+
+        output: list[str] = []
+
+        for rule in self._app.url_map.iter_rules():
+            if rule.methods is None:
+                continue
+            methods = ','.join(sorted(rule.methods))
+            line = f"{rule.rule} => {methods} => {rule.endpoint}"
+            output.append(line)
+
+        return '<br>'.join(output)
 
 
 WsgiServices().wire([__name__])

@@ -64,3 +64,7 @@ In the app/services folder we create a /test folder
 In the test folder we create a test_service.py file and a itest_service.py interface file
 The interface file contains the interface ITestService which contains the abstract methods which will be implemented in the test_service.py file
 In the test_service.py file we create a class TestService which implements the ITestService interface
+
+## dependency injection
+we use depenny injection from the start so we do not have to call the service classes directly but we can use the interface classes. This is done in the main.py file.
+in main.py we never have to use a different Program class if we are in dev mode. We have alternative implementations of the IProgram interface which we can adjust in the program_services module in app.program.
